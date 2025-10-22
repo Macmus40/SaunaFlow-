@@ -1,0 +1,5 @@
+{
+  "name": "SaunaFlow",
+  "description": "A minimal, calm, and spa-like wellness application to guide users through a full hot-cold sauna ritual. The app helps users relax, improve resilience, and build healthy rituals with guided timers and relaxing music.",
+  "requestFramePermissions": []
+}
