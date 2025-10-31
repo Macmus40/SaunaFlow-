@@ -59,13 +59,13 @@ export const SessionSettingsScreen: React.FC<SessionSettingsScreenProps> = ({ pr
   const hasChanges = JSON.stringify(protocol.stages) !== JSON.stringify(adjustedProtocol.stages);
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-white p-6">
+    <div className="flex flex-col min-h-screen bg-slate-900 text-white p-6">
       <div className="w-full max-w-2xl mx-auto">
         <div className="relative flex items-center justify-center mb-6">
-          <button onClick={onBack} className="absolute left-0 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">&larr; {t('back')}</button>
+          <button onClick={onBack} className="absolute left-0 text-slate-300 hover:text-white transition-colors">&larr; {t('back')}</button>
           <h1 className="text-3xl font-bold text-center">{t('session_settings_title')}</h1>
         </div>
-        <p className="text-slate-500 dark:text-slate-400 text-center mb-10">{t('session_settings_subtitle')}</p>
+        <p className="text-slate-400 text-center mb-10">{t('session_settings_subtitle')}</p>
 
         <div className="space-y-8">
             <TempSlider
@@ -75,7 +75,7 @@ export const SessionSettingsScreen: React.FC<SessionSettingsScreenProps> = ({ pr
                 min={60}
                 max={110}
                 step={1}
-                color="text-amber-600 dark:text-amber-400"
+                color="text-amber-400"
                 accent="accent-amber-500"
             />
             <TempSlider
@@ -85,29 +85,29 @@ export const SessionSettingsScreen: React.FC<SessionSettingsScreenProps> = ({ pr
                 min={1}
                 max={20}
                 step={1}
-                color="text-sky-600 dark:text-sky-400"
+                color="text-sky-400"
                 accent="accent-sky-500"
             />
         </div>
         
-        <div className="mt-12 p-6 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl">
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 text-center">{t('adjusted_times')}</h3>
+        <div className="mt-12 p-6 bg-slate-800/50 border border-slate-700 rounded-xl">
+            <h3 className="text-lg font-bold text-slate-200 mb-4 text-center">{t('adjusted_times')}</h3>
             <div className="grid grid-cols-2 gap-4 text-center">
                 <div>
-                    <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">{t('original')}</h4>
+                    <h4 className="text-sm font-semibold text-slate-400 mb-2">{t('original')}</h4>
                     <div className="space-y-1">
                         {protocol.stages.map(stage => (
-                             <p key={stage.type} className="text-slate-700 dark:text-slate-300">
+                             <p key={stage.type} className="text-slate-300">
                                 {t('stage_duration_display', { stageName: t(`stage_${stage.type}`), duration: Math.round(stage.duration / 60) })}
                              </p>
                         ))}
                     </div>
                 </div>
                  <div>
-                    <h4 className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-2">{t('recommended')}</h4>
+                    <h4 className="text-sm font-semibold text-amber-400 mb-2">{t('recommended')}</h4>
                     <div className="space-y-1">
                        {adjustedProtocol.stages.map((stage, index) => (
-                             <p key={stage.type} className={`font-semibold ${protocol.stages[index].duration !== stage.duration ? 'text-amber-600 dark:text-amber-300' : 'text-slate-700 dark:text-slate-300'}`}>
+                             <p key={stage.type} className={`font-semibold ${protocol.stages[index].duration !== stage.duration ? 'text-amber-300' : 'text-slate-300'}`}>
                                  {t('stage_duration_display', { stageName: t(`stage_${stage.type}`), duration: (stage.duration / 60).toFixed(1) })}
                              </p>
                         ))}
@@ -126,7 +126,7 @@ export const SessionSettingsScreen: React.FC<SessionSettingsScreenProps> = ({ pr
           {hasChanges && (
             <button 
                 onClick={() => onStart(protocol)}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white underline transition-colors"
+                className="text-slate-400 hover:text-white underline transition-colors"
             >
                 {t('start_original')}
             </button>
@@ -149,13 +149,13 @@ interface TempSliderProps {
 }
 
 const TempSlider: React.FC<TempSliderProps> = ({ label, value, onChange, min, max, step, color, accent }) => (
-    <div className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+    <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
         <div className="flex justify-between items-center mb-2">
             <label className={`font-bold flex items-center space-x-2 ${color}`}>
                 <ThermometerIcon className="w-5 h-5" />
                 <span>{label}</span>
             </label>
-            <span className="font-mono text-lg text-slate-900 dark:text-white">{value}°C</span>
+            <span className="font-mono text-lg text-white">{value}°C</span>
         </div>
         <input
             type="range"
@@ -164,7 +164,7 @@ const TempSlider: React.FC<TempSliderProps> = ({ label, value, onChange, min, ma
             step={step}
             value={value}
             onChange={(e) => onChange(parseInt(e.target.value, 10))}
-            className={`w-full h-2 bg-slate-300 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer ${accent}`}
+            className={`w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer ${accent}`}
         />
     </div>
 );

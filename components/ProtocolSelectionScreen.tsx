@@ -24,10 +24,10 @@ export const ProtocolSelectionScreen: React.FC<ProtocolSelectionScreenProps> = (
     : t('protocol_title_generic');
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-slate-100 dark:bg-slate-900 p-6 text-slate-800 dark:text-white">
+    <div className="flex flex-col items-center min-h-screen bg-slate-900 p-6 text-white">
       <div className="w-full max-w-2xl mx-auto">
         <div className="relative flex items-center justify-center mb-10">
-            <button onClick={onBack} className="absolute left-0 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">&larr; {t('back_to_dashboard')}</button>
+            <button onClick={onBack} className="absolute left-0 text-slate-300 hover:text-white transition-colors">&larr; {t('back_to_dashboard')}</button>
             <h1 className="text-3xl font-bold">{title}</h1>
         </div>
 
@@ -47,10 +47,10 @@ export const ProtocolSelectionScreen: React.FC<ProtocolSelectionScreenProps> = (
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center" aria-hidden="true">
-              <div className="w-full border-t border-slate-300 dark:border-slate-700" />
+              <div className="w-full border-t border-slate-700" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-slate-100 dark:bg-slate-900 px-2 text-sm text-slate-500">{t('or_choose_preset')}</span>
+              <span className="bg-slate-900 px-2 text-sm text-slate-500">{t('or_choose_preset')}</span>
             </div>
           </div>
 
@@ -58,11 +58,11 @@ export const ProtocolSelectionScreen: React.FC<ProtocolSelectionScreenProps> = (
             <button
               key={protocol.id}
               onClick={() => onProtocolSelected(protocol)}
-              className="w-full text-left bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-amber-400 transition-all duration-300"
+              className="w-full text-left bg-slate-800 p-6 rounded-2xl border border-slate-700 hover:bg-slate-700 hover:border-amber-400 transition-all duration-300"
             >
               <h2 className="text-xl font-bold mb-2">{t(protocol.name)}</h2>
-              <p className="text-slate-600 dark:text-slate-400 mb-4">{t(protocol.description)}</p>
-              <div className="flex space-x-4 text-sm text-slate-500 dark:text-slate-300">
+              <p className="text-slate-400 mb-4">{t(protocol.description)}</p>
+              <div className="flex space-x-4 text-sm text-slate-300">
                 <span>{protocol.cycles} {t('cycles')}</span>
                 <span>&bull;</span>
                 <span>{protocol.stages.map(s => Math.round(s.duration / 60)).join(' / ')} {t('min_stages')}</span>

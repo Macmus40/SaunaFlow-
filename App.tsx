@@ -234,14 +234,14 @@ const App: React.FC = () => {
       case AppState.Loading:
       default:
         return (
-          <div className="flex items-center justify-center h-screen bg-slate-100 dark:bg-slate-900">
-            <div className="text-slate-800 dark:text-white text-xl">Loading SaunaFlow...</div>
+          <div className="flex items-center justify-center h-screen bg-slate-900">
+            <div className="text-white text-xl">Loading SaunaFlow...</div>
           </div>
         );
     }
   };
 
-  return <div className="min-h-screen bg-slate-100 dark:bg-slate-900">{renderContent()}</div>;
+  return <div className="min-h-screen bg-slate-900">{renderContent()}</div>;
 };
 
 export default App;

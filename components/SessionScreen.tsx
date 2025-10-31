@@ -27,6 +27,12 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
   const currentStage = protocol.stages[currentStageIndex];
   const colors = STAGE_COLORS[currentStage.type];
   
+  const stageEndSfx = useMemo(() => {
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3');
+    audio.volume = 0.3;
+    return audio;
+  }, []);
+  
   const { microcopy, tip } = useMemo(() => {
     const content = STAGE_CONTENT[currentStage.type];
     const microcopyKey = content.microcopy[Math.floor(Math.random() * content.microcopy.length)];
@@ -39,6 +45,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
 
     if (timeLeft <= 0) {
       setTimerStatus('completed');
+      stageEndSfx.play().catch(e => console.error("Error playing sound effect", e));
       return;
     }
 
@@ -48,7 +55,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, timerStatus]);
+  }, [timeLeft, timerStatus, stageEndSfx]);
 
   const handlePlayPause = () => {
     if (timerStatus === 'running') {
@@ -60,6 +67,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
 
   const handleEndStage = () => {
     setTimerStatus('completed');
+    stageEndSfx.play().catch(e => console.error("Error playing sound effect", e));
   };
 
   const handleExit = () => {
@@ -122,7 +130,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
         return (
              <button
               onClick={handleNextStep}
-              className="bg-slate-800 dark:bg-slate-100 text-slate-100 dark:text-slate-900 font-bold py-4 px-12 rounded-full text-lg animate-pulse"
+              className="bg-slate-100 text-slate-900 font-bold py-4 px-12 rounded-full text-lg animate-pulse"
             >
               {t('next_step')}
             </button>
@@ -133,7 +141,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
         <div className="flex items-center justify-around w-full max-w-md">
             <button
                 onClick={handleEndStage}
-                className="flex flex-col items-center justify-center w-24 h-24 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors disabled:opacity-50"
+                className="flex flex-col items-center justify-center w-24 h-24 text-slate-400 hover:text-white transition-colors disabled:opacity-50"
                 aria-label={t('end_stage_label')}
                 disabled={timerStatus === 'initial'}
             >
@@ -142,7 +150,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
             </button>
             <button
                 onClick={handlePlayPause}
-                className="w-28 h-28 bg-white/90 dark:bg-white/90 text-slate-900 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-white transition-transform transform hover:scale-105"
+                className="w-28 h-28 bg-white/90 text-slate-900 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-white transition-transform transform hover:scale-105"
                 aria-label={timerStatus === 'running' ? t('pause_label') : t('play_label')}
             >
                 {timerStatus === 'running' ? <PauseIcon className="w-12 h-12" /> : <PlayIcon className="w-12 h-12" />}
@@ -154,9 +162,9 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
 
   return (
     <div className={`flex flex-col min-h-screen ${colors.bg} ${colors.text} transition-colors duration-1000 p-6`}>
-      <header className="grid grid-cols-3 items-center text-lg text-slate-700 dark:text-slate-300">
+      <header className="grid grid-cols-3 items-center text-lg text-slate-300">
         <div className="text-left">
-            <button onClick={handleExit} className="bg-white/50 dark:bg-slate-800/50 hover:bg-white/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 px-5 rounded-full border border-slate-300 dark:border-slate-700 transition-colors">
+            <button onClick={handleExit} className="bg-slate-800/50 hover:bg-slate-700 text-slate-300 font-semibold py-2 px-5 rounded-full border border-slate-700 transition-colors">
                 {t('exit')}
             </button>
         </div>
@@ -165,7 +173,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
             <div className="text-sm">{t('cycle')} {currentCycle} / {protocol.cycles}</div>
         </div>
         <div className="text-right">
-            <button onClick={handleSwitchStyle} className="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors inline-block p-3 -m-3 rounded-full" aria-label={t('switch_timer_style_label')}>
+            <button onClick={handleSwitchStyle} className="text-slate-400 hover:text-white transition-colors inline-block p-3 -m-3 rounded-full" aria-label={t('switch_timer_style_label')}>
                 <SwitchIcon className="w-7 h-7"/>
             </button>
         </div>
@@ -173,11 +181,11 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
 
       <main className="flex-grow flex flex-col items-center justify-center text-center">
         {isTipVisible && (
-            <div className="absolute inset-0 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-sm z-10 flex items-center justify-center p-8" onClick={() => setIsTipVisible(false)}>
-                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 rounded-xl max-w-md text-center">
-                    <h3 className="text-xl font-bold mb-3 text-slate-800 dark:text-white">{t('tip_title')}</h3>
-                    <p className="text-slate-600 dark:text-slate-300">{tip}</p>
-                    <button onClick={() => setIsTipVisible(false)} className="mt-6 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white font-semibold py-2 px-6 rounded-full">
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-10 flex items-center justify-center p-8" onClick={() => setIsTipVisible(false)}>
+                <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl max-w-md text-center">
+                    <h3 className="text-xl font-bold mb-3 text-white">{t('tip_title')}</h3>
+                    <p className="text-slate-300">{tip}</p>
+                    <button onClick={() => setIsTipVisible(false)} className="mt-6 bg-slate-700 text-white font-semibold py-2 px-6 rounded-full">
                         {t('close')}
                     </button>
                 </div>
@@ -186,9 +194,9 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ protocol, onSessio
         
         {renderTimer()}
         
-        <div className="flex items-center space-x-2 mt-8 h-12 text-slate-500 dark:text-slate-400 text-xl">
+        <div className="flex items-center space-x-2 mt-8 h-12 text-slate-400 text-xl">
             <span>{timerStatus === 'completed' ? t('stage_complete') : microcopy}</span>
-            <button onClick={() => setIsTipVisible(true)} className="text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors rounded-full p-3 -m-3" aria-label={t('show_tip_label')}>
+            <button onClick={() => setIsTipVisible(true)} className="text-slate-500 hover:text-white transition-colors rounded-full p-3 -m-3" aria-label={t('show_tip_label')}>
                 <InformationCircleIcon className="w-8 h-8" />
             </button>
         </div>

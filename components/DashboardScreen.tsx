@@ -5,7 +5,6 @@ import { FireIcon, SnowflakeIcon, HeartIcon, TrophyIcon } from './icons/Icons';
 import { ALL_ACHIEVEMENTS } from './achievements';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { ThemeSwitcher } from './ThemeSwitcher';
 
 interface DashboardScreenProps {
   userName: string | null;
@@ -68,22 +67,21 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
   };
 
   return (
-    <div className="flex flex-col min-h-screen text-slate-800 dark:text-white p-6">
+    <div className="flex flex-col min-h-screen text-white p-6">
       <header className="mb-8 flex justify-between items-start">
         <div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">{t('dashboard_greeting', { userName: userName || '' })}</h1>
+            <h1 className="text-4xl font-bold text-slate-100">{t('dashboard_greeting', { userName: userName || '' })}</h1>
             <div className="flex items-center space-x-4 mt-2">
-            <p className="text-slate-600 dark:text-slate-400">{t('current_goal', { goal: goal ? t(`goal_${goal}`) : '' })}</p>
-            <button onClick={onChangeGoal} className="text-sm text-amber-500 dark:text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 underline">
+            <p className="text-slate-400">{t('current_goal', { goal: goal ? t(`goal_${goal}`) : '' })}</p>
+            <button onClick={onChangeGoal} className="text-sm text-amber-400 hover:text-amber-300 underline">
                 {t('change_goal')}
             </button>
-            <button onClick={handleResetClick} className="text-sm text-rose-500 dark:text-rose-400 hover:text-rose-600 dark:hover:text-rose-300 underline">
+            <button onClick={handleResetClick} className="text-sm text-rose-400 hover:text-rose-300 underline">
                 {t('reset_app')}
             </button>
             </div>
         </div>
         <div className="flex items-center space-x-2">
-            <ThemeSwitcher />
             <LanguageSwitcher />
         </div>
       </header>
@@ -107,23 +105,23 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
       </main>
 
       <div className="mt-10">
-        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4">{t('history')}</h2>
-        <div className="bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4 max-h-60 overflow-y-auto">
+        <h2 className="text-2xl font-bold text-slate-200 mb-4">{t('history')}</h2>
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 max-h-60 overflow-y-auto">
           {sessionHistory.length > 0 ? (
             [...sessionHistory].reverse().map((log, index) => (
-              <div key={index} className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+              <div key={index} className="flex justify-between items-center py-3 border-b border-slate-700 last:border-b-0">
                 <div>
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{log.protocolName}</p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">{new Date(log.date).toLocaleDateString()}</p>
+                  <p className="font-semibold text-slate-200">{log.protocolName}</p>
+                  <p className="text-sm text-slate-400">{new Date(log.date).toLocaleDateString()}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-slate-800 dark:text-slate-200">{Math.round(log.totalTime / 60)} {t('minutes_short')}</p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">{log.cyclesCompleted} {t('cycles_short')}</p>
+                  <p className="font-semibold text-slate-200">{Math.round(log.totalTime / 60)} {t('minutes_short')}</p>
+                  <p className="text-sm text-slate-400">{log.cyclesCompleted} {t('cycles_short')}</p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-slate-500 dark:text-slate-500 text-center py-8">{t('history_empty')}</p>
+            <p className="text-slate-500 text-center py-8">{t('history_empty')}</p>
           )}
         </div>
       </div>
@@ -135,7 +133,7 @@ const AchievementsGrid: React.FC<{sessionHistory: SessionLog[], streak: number}>
     const { t } = useLanguage();
     return (
         <div>
-            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-200 mb-4">{t('achievements')}</h2>
+            <h2 className="text-2xl font-bold text-slate-200 mb-4">{t('achievements')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {ALL_ACHIEVEMENTS.map(ach => (
                     <AchievementCard key={ach.id} achievement={ach} unlocked={ach.isUnlocked(sessionHistory, streak)} />
@@ -148,10 +146,10 @@ const AchievementsGrid: React.FC<{sessionHistory: SessionLog[], streak: number}>
 const AchievementCard: React.FC<{achievement: Achievement, unlocked: boolean}> = ({ achievement, unlocked }) => {
     const { t } = useLanguage();
     return (
-    <div className={`p-4 rounded-xl border flex flex-col items-center text-center transition-all duration-300 ${unlocked ? 'bg-amber-500/10 dark:bg-amber-500/10 border-amber-500/30' : 'bg-slate-200/50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 opacity-60'}`}>
-        <div className={`w-12 h-12 mb-2 ${unlocked ? 'text-amber-500 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'}`}>{achievement.icon}</div>
-        <h3 className={`font-bold text-sm ${unlocked ? 'text-amber-700 dark:text-amber-300' : 'text-slate-600 dark:text-slate-300'}`}>{t(achievement.title)}</h3>
-        {unlocked && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t(achievement.description)}</p>}
+    <div className={`p-4 rounded-xl border flex flex-col items-center text-center transition-all duration-300 ${unlocked ? 'bg-amber-500/10 border-amber-500/30' : 'bg-slate-800 border-slate-700 opacity-60'}`}>
+        <div className={`w-12 h-12 mb-2 ${unlocked ? 'text-amber-400' : 'text-slate-500'}`}>{achievement.icon}</div>
+        <h3 className={`font-bold text-sm ${unlocked ? 'text-amber-300' : 'text-slate-300'}`}>{t(achievement.title)}</h3>
+        {unlocked && <p className="text-xs text-slate-400 mt-1">{t(achievement.description)}</p>}
     </div>
 )};
 
@@ -163,9 +161,9 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ icon, value, label }) => (
-    <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col items-start">
+    <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-col items-start">
         <div className="w-10 h-10 mb-3">{icon}</div>
-        <p className="text-4xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
-        <p className="text-slate-600 dark:text-slate-400">{label}</p>
+        <p className="text-4xl font-bold text-slate-100">{value}</p>
+        <p className="text-slate-400">{label}</p>
     </div>
 )
