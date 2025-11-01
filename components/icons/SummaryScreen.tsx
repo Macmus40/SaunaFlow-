@@ -1,3 +1,4 @@
+
 import React from 'react';
 import type { SessionLog } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';

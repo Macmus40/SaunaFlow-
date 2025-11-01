@@ -174,6 +174,44 @@ export const BatteryFullIcon: React.FC<IconProps> = ({ className }) => (
     </svg>
 );
 
+// Admin Panel Icons
+export const UsersIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-2.453M15 19.128v-3.873a3.375 3.375 0 0 0-3.375-3.375h-1.5A3.375 3.375 0 0 0 6.75 15.255v3.873M15 19.128a2.25 2.25 0 0 1-2.25-2.25v-3.873a3.375 3.375 0 0 0-3.375-3.375H6.75a3.375 3.375 0 0 0-3.375 3.375v3.873c0 1.243 1.007 2.25 2.25 2.25h1.5M12 12.253a3.375 3.375 0 0 1 3.375-3.375h1.5a3.375 3.375 0 0 1 3.375 3.375M12 12.253a3.375 3.375 0 0 0-3.375-3.375H6.75a3.375 3.375 0 0 0-3.375 3.375m12.75 0a3.375 3.375 0 0 1-3.375 3.375H9.375a3.375 3.375 0 0 1-3.375-3.375m12.75 0h.008v.008h-.008v-.008Zm-12.75 0h.008v.008h-.008v-.008Z" />
+    </svg>
+);
+
+export const PhotoIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+    </svg>
+);
+
+export const CreditCardIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+    </svg>
+);
+
+export const PencilIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+    </svg>
+);
+
+export const TrashIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.09-2.134H8.09a2.09 2.09 0 0 0-2.09 2.134v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+    </svg>
+);
+
+export const MusicNoteIcon: React.FC<IconProps> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V4.5M9 9c0-1.381-1.119-2.5-2.5-2.5S4 7.619 4 9s1.119 2.5 2.5 2.5S9 10.381 9 9Zm0 0h12M9 9v10.5a2.5 2.5 0 0 0 2.5 2.5s2.5-1.119 2.5-2.5-1.119-2.5-2.5-2.5-2.5 1.119-2.5 2.5Z" />
+    </svg>
+);
+
+
 // Flags
 export const FlagUKIcon: React.FC<IconProps> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" className={className}><path d="M0 0h60v30H0z" fill="#00247d"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" strokeWidth="6"/><path d="M0 0l60 30m0-30L0 30" stroke="#cf142b" strokeWidth="4"/><path d="M30 0v30M0 15h60" stroke="#fff" strokeWidth="10"/><path d="M30 0v30M0 15h60" stroke="#cf142b" strokeWidth="6"/></svg>

@@ -1,3 +1,4 @@
+
 export const translations: Record<string, Record<string, string>> = {
   en: {
     // Onboarding
@@ -13,6 +14,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_Relax: "Relax",
     goal_Performance: "Performance",
 
+    // Auth
+    auth_subtitle: "Sign in via magic link with your email below.",
+    email_placeholder: "your@email.com",
+    auth_sending: "Sending...",
+    auth_send_link: "Send Magic Link",
+
     // Health Check
     health_check_title: "Safety Checklist",
     health_check_subtitle: "Before you begin, please review and acknowledge the following safety statements. Your well-being is our top priority.",
@@ -25,9 +32,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "I Understand and Accept",
     
     // Dashboard
-    dashboard_greeting: "Welcome, {userName}!",
+    dashboard_greeting_name: "Welcome, {username}!",
     current_goal: "Your current goal: {goal}",
     change_goal: "(Change)",
+    sign_out: "Sign Out",
     stat_streak: "Day Streak",
     stat_total_minutes: "Total Minutes",
     stat_sessions: "Sessions",
@@ -187,6 +195,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_performance_desc: "Przyspiesz regenerację, buduj odporność i wyostrz koncentrację dzięki wymagającym protokołom.",
     goal_Relax: "Relaks",
     goal_Performance: "Wydajność",
+
+    // Auth
+    auth_subtitle: "Zaloguj się za pomocą magicznego linku wysłanego na Twój e-mail.",
+    email_placeholder: "twoj@email.com",
+    auth_sending: "Wysyłanie...",
+    auth_send_link: "Wyślij Magiczny Link",
     
     // Health Check
     health_check_title: "Lista Kontrolna Bezpieczeństwa",
@@ -200,9 +214,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Rozumiem i akceptuję",
 
     // Dashboard
-    dashboard_greeting: "Witaj, {userName}!",
+    dashboard_greeting_name: "Witaj, {username}!",
     current_goal: "Twój obecny cel: {goal}",
     change_goal: "(Zmień)",
+    sign_out: "Wyloguj się",
     stat_streak: "Dni z rzędu",
     stat_total_minutes: "Suma minut",
     stat_sessions: "Sesje",
@@ -363,6 +378,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_Relax: "Entspannen",
     goal_Performance: "Leistung",
 
+    // Auth
+    auth_subtitle: "Melden Sie sich per Magic Link mit Ihrer E-Mail unten an.",
+    email_placeholder: "deine@email.de",
+    auth_sending: "Wird gesendet...",
+    auth_send_link: "Magic Link senden",
+
     // Health Check
     health_check_title: "Sicherheits-Checkliste",
     health_check_subtitle: "Bevor Sie beginnen, überprüfen und bestätigen Sie bitte die folgenden Sicherheitshinweise. Ihr Wohlbefinden hat für uns oberste Priorität.",
@@ -375,9 +396,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Ich verstehe und akzeptiere",
 
     // Dashboard
-    dashboard_greeting: "Willkommen, {userName}!",
+    dashboard_greeting_name: "Willkommen, {username}!",
     current_goal: "Ihr aktuelles Ziel: {goal}",
     change_goal: "(Ändern)",
+    sign_out: "Abmelden",
     stat_streak: "Tage in Folge",
     stat_total_minutes: "Gesamtminuten",
     stat_sessions: "Sitzungen",
@@ -512,6 +534,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_Relax: "Slap af",
     goal_Performance: "Præstation",
 
+    // Auth
+    auth_subtitle: "Log ind via magisk link med din e-mail nedenfor.",
+    email_placeholder: "din@email.dk",
+    auth_sending: "Sender...",
+    auth_send_link: "Send Magisk Link",
+
     // Health Check
     health_check_title: "Sikkerhedstjekliste",
     health_check_subtitle: "Før du begynder, bedes du gennemgå og anerkende følgende sikkerhedserklæringer. Dit velvære er vores højeste prioritet.",
@@ -524,9 +552,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Jeg forstår og accepterer",
 
     // Dashboard
-    dashboard_greeting: "Velkommen, {userName}!",
+    dashboard_greeting_name: "Velkommen, {username}!",
     current_goal: "Dit nuværende mål: {goal}",
     change_goal: "(Skift)",
+    sign_out: "Log ud",
     stat_streak: "Dage i træk",
     stat_total_minutes: "Samlede minutter",
     stat_sessions: "Sessioner",
@@ -631,6 +660,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_performance_desc: "Öka återhämtningen, bygg motståndskraft och skärp ditt fokus med utmanande protokoll.",
     goal_Relax: "Koppla av",
     goal_Performance: "Prestation",
+    
+    // Auth
+    auth_subtitle: "Logga in via magisk länk med din e-post nedan.",
+    email_placeholder: "din@epost.se",
+    auth_sending: "Skickar...",
+    auth_send_link: "Skicka Magisk Länk",
 
     // Health Check
     health_check_title: "Säkerhetschecklista",
@@ -644,9 +679,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Jag förstår och accepterar",
 
     // Dashboard
-    dashboard_greeting: "Välkommen, {userName}!",
+    dashboard_greeting_name: "Välkommen, {username}!",
     current_goal: "Ditt nuvarande mål: {goal}",
     change_goal: "(Ändra)",
+    sign_out: "Logga ut",
     stat_streak: "Dagar i följd",
     stat_total_minutes: "Totala minuter",
     stat_sessions: "Sessioner",
@@ -751,6 +787,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_performance_desc: "Øk restitusjonen, bygg motstandskraft og skjerp fokuset med utfordrende protokoller.",
     goal_Relax: "Slapp av",
     goal_Performance: "Ytelse",
+    
+    // Auth
+    auth_subtitle: "Logg inn via magisk lenke med e-posten din nedenfor.",
+    email_placeholder: "din@epost.no",
+    auth_sending: "Sender...",
+    auth_send_link: "Send Magisk Lenke",
 
     // Health Check
     health_check_title: "Sikkerhetssjekkliste",
@@ -764,9 +806,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Jeg forstår og godtar",
 
     // Dashboard
-    dashboard_greeting: "Velkommen, {userName}!",
+    dashboard_greeting_name: "Velkommen, {username}!",
     current_goal: "Ditt nåværende mål: {goal}",
     change_goal: "(Endre)",
+    sign_out: "Logg ut",
     stat_streak: "Dager på rad",
     stat_total_minutes: "Totale minutter",
     stat_sessions: "Økter",
@@ -871,6 +914,12 @@ export const translations: Record<string, Record<string, string>> = {
     goal_performance_desc: "Tehosta palautumista, rakenna sietokykyä ja terävöitä keskittymistäsi haastavilla protokollilla.",
     goal_Relax: "Rentoudu",
     goal_Performance: "Suorituskyky",
+    
+    // Auth
+    auth_subtitle: "Kirjaudu sisään sähköpostiin lähetettävällä taikalinkillä.",
+    email_placeholder: "sinun@sähköposti.fi",
+    auth_sending: "Lähetetään...",
+    auth_send_link: "Lähetä Taikalinkki",
 
     // Health Check
     health_check_title: "Turvallisuuden Tarkistuslista",
@@ -884,9 +933,10 @@ export const translations: Record<string, Record<string, string>> = {
     health_check_button_enabled: "Ymmärrän ja hyväksyn",
 
     // Dashboard
-    dashboard_greeting: "Tervetuloa, {userName}!",
+    dashboard_greeting_name: "Tervetuloa, {username}!",
     current_goal: "Nykyinen tavoitteesi: {goal}",
     change_goal: "(Vaihda)",
+    sign_out: "Kirjaudu ulos",
     stat_streak: "Päiväputki",
     stat_total_minutes: "Minuutit yhteensä",
     stat_sessions: "Sessiot",

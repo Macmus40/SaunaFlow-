@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import type { Protocol, SessionLog, TimerStatus, TimerStyle } from '../types';
 import { StageType } from '../types';

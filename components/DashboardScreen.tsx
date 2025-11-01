@@ -5,17 +5,22 @@ import { FireIcon, SnowflakeIcon, HeartIcon, TrophyIcon } from './icons/Icons';
 import { ALL_ACHIEVEMENTS } from './achievements';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { Session } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabaseClient';
+
 
 interface DashboardScreenProps {
-  userName: string | null;
+  session: Session | null;
+  username: string | null;
   goal: Goal | null;
   sessionHistory: SessionLog[];
   onStartRitual: () => void;
   onChangeGoal: () => void;
   onResetApp: () => void;
+  onEnterAdmin: () => void;
 }
 
-export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal, sessionHistory, onStartRitual, onChangeGoal, onResetApp }) => {
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({ session, username, goal, sessionHistory, onStartRitual, onChangeGoal, onResetApp, onEnterAdmin }) => {
   const { t } = useLanguage();
   const totalMinutes = sessionHistory.reduce((acc, log) => acc + log.totalTime, 0) / 60;
   const totalSessions = sessionHistory.length;
@@ -23,8 +28,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
   const calculateStreak = () => {
     if (sessionHistory.length === 0) return 0;
     
-    let streak = 0;
-    const sortedHistory = [...sessionHistory].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    // History is already sorted newest to oldest from the database query
+    const sortedHistory = sessionHistory;
     
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -39,7 +44,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
         return 0;
     }
     
-    streak = 1;
+    let streak = 1;
     let lastDate = firstSessionDate;
 
     for (let i = 1; i < sortedHistory.length; i++) {
@@ -65,16 +70,24 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
       onResetApp();
     }
   };
+  
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    // onAuthStateChange in App.tsx will handle the rest.
+  };
 
   return (
     <div className="flex flex-col min-h-screen text-white p-6">
       <header className="mb-8 flex justify-between items-start">
         <div>
-            <h1 className="text-4xl font-bold text-slate-100">{t('dashboard_greeting', { userName: userName || '' })}</h1>
-            <div className="flex items-center space-x-4 mt-2">
+            <h1 className="text-4xl font-bold text-slate-100">{t('dashboard_greeting_name', { username: username || 'User' })}</h1>
+            <div className="flex items-center space-x-4 mt-2 flex-wrap">
             <p className="text-slate-400">{t('current_goal', { goal: goal ? t(`goal_${goal}`) : '' })}</p>
             <button onClick={onChangeGoal} className="text-sm text-amber-400 hover:text-amber-300 underline">
                 {t('change_goal')}
+            </button>
+            <button onClick={handleSignOut} className="text-sm text-amber-400 hover:text-amber-300 underline">
+                {t('sign_out')}
             </button>
             <button onClick={handleResetClick} className="text-sm text-rose-400 hover:text-rose-300 underline">
                 {t('reset_app')}
@@ -104,12 +117,12 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
         <AchievementsGrid sessionHistory={sessionHistory} streak={streak} />
       </main>
 
-      <div className="mt-10">
+      <div className="mt-auto pt-10">
         <h2 className="text-2xl font-bold text-slate-200 mb-4">{t('history')}</h2>
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 max-h-60 overflow-y-auto">
           {sessionHistory.length > 0 ? (
-            [...sessionHistory].reverse().map((log, index) => (
-              <div key={index} className="flex justify-between items-center py-3 border-b border-slate-700 last:border-b-0">
+            sessionHistory.map((log) => (
+              <div key={log.date} className="flex justify-between items-center py-3 border-b border-slate-700 last:border-b-0">
                 <div>
                   <p className="font-semibold text-slate-200">{log.protocolName}</p>
                   <p className="text-sm text-slate-400">{new Date(log.date).toLocaleDateString()}</p>
@@ -125,6 +138,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ userName, goal
           )}
         </div>
       </div>
+      <footer className="text-center mt-6">
+        <button onClick={onEnterAdmin} className="text-xs text-slate-600 hover:text-slate-400 transition-colors">
+          Admin Panel
+        </button>
+      </footer>
     </div>
   );
 };
