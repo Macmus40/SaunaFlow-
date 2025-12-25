@@ -1,16 +1,19 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import type { Protocol } from '../types';
 import { BatteryLowIcon, BatteryFullIcon, FaceFrownIcon, FaceNeutralIcon, FaceSmileIcon } from './icons/Icons';
 
+type WellbeingData = {
+  hydration: number;
+  energy: number;
+  mood: 'stressed' | 'neutral' | 'calm';
+  intention: string;
+};
 interface WellbeingCheckScreenProps {
-  protocol: Protocol;
-  onComplete: (protocol: Protocol) => void;
+  onComplete: (data: WellbeingData) => void;
   onBack: () => void;
 }
 
-export const WellbeingCheckScreen: React.FC<WellbeingCheckScreenProps> = ({ protocol, onComplete, onBack }) => {
+export const WellbeingCheckScreen: React.FC<WellbeingCheckScreenProps> = ({ onComplete, onBack }) => {
   const { t } = useLanguage();
   const [hydration, setHydration] = useState(3);
   const [energy, setEnergy] = useState(3);
@@ -106,7 +109,7 @@ export const WellbeingCheckScreen: React.FC<WellbeingCheckScreenProps> = ({ prot
 
         <div className="mt-10">
           <button 
-            onClick={() => onComplete(protocol)}
+            onClick={() => onComplete({ hydration, energy, mood, intention })}
             className="w-full bg-amber-500 text-slate-900 font-bold py-4 px-10 rounded-full text-xl hover:bg-amber-400 transition-transform transform hover:scale-105 shadow-lg shadow-amber-500/20"
           >
             {t('begin_session')}

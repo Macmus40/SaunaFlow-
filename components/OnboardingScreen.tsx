@@ -12,7 +12,6 @@ interface OnboardingScreenProps {
 
 const backgroundImage = 'https://images.unsplash.com/photo-1544161515-cfd626dba494?auto=format&fit=crop&w=1280&q=80';
 
-// Fix: Corrected typo in component props type from `On-boardingScreenProps` to `OnboardingScreenProps`.
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onOnboardingComplete }) => {
   const [name, setName] = useState('');
   const { t } = useLanguage();

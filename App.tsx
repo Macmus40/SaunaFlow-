@@ -1,334 +1,215 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { Session } from '@supabase/supabase-js';
-import { supabase } from './lib/supabaseClient';
+import type { Session } from '@supabase/auth-js';
+import { supabase, IS_CONFIGURED, IS_TEST_MODE } from './lib/supabaseClient';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { HealthCheckScreen } from './components/HealthCheckScreen';
+import { AuthScreen } from './components/AuthScreen';
 import { DashboardScreen } from './components/DashboardScreen';
 import { ProtocolSelectionScreen } from './components/ProtocolSelectionScreen';
-import { CustomProtocolScreen } from './components/CustomProtocolScreen';
 import { SessionSettingsScreen } from './components/SessionSettingsScreen';
 import { WellbeingCheckScreen } from './components/WellbeingCheckScreen';
 import { SessionScreen } from './components/SessionScreen';
 import { SummaryScreen } from './components/SummaryScreen';
 import { AdminPanel } from './components/admin/AdminPanel';
-import { AuthScreen } from './components/AuthScreen';
+import { HistoryDetailScreen } from './components/HistoryDetailScreen';
+import { ProfileSettingsScreen } from './components/ProfileSettingsScreen';
+import { DebugPanel } from './components/DebugPanel';
 import { AppState, Goal } from './types';
-import type { Protocol, SessionLog } from './types';
+import type { Protocol, SessionLog, UserPreferences } from './types';
 
+const DEFAULT_PREFERENCES: UserPreferences = {
+    defaultTimerStyle: 'circle',
+    defaultVolume: 0.5,
+    defaultVoiceGuidance: true,
+    defaultVoice: 'Kore',
+};
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>(AppState.Loading);
+  const [authReady, setAuthReady] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
-  const [goal, setGoal] = useState<Goal | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [selectedProtocol, setSelectedProtocol] = useState<Protocol | null>(null);
+  const [goal, setGoal] = useState<Goal | null>(null);
+  const [userPreferences, setUserPreferences] = useState<UserPreferences>(DEFAULT_PREFERENCES);
   const [sessionHistory, setSessionHistory] = useState<SessionLog[]>([]);
+  const [selectedProtocol, setSelectedProtocol] = useState<Protocol | null>(null);
   const [lastCompletedSession, setLastCompletedSession] = useState<SessionLog | null>(null);
+  const [selectedHistoryLog, setSelectedHistoryLog] = useState<SessionLog | null>(null);
+  const [sessionSettings, setSessionSettings] = useState<any>({ voiceGuidance: true, voice: 'Kore' });
+  const [showDebug, setShowDebug] = useState(false);
 
+  // Funkcja czyszcząca URL bez przeładowania strony
+  const cleanUrl = useCallback(() => {
+    if (window.location.hash.includes('access_token=')) {
+      console.log("Cleaning tokens from URL hash...");
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  // 1. Inicjalizacja Auth na starcie
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      const healthCheckAccepted = localStorage.getItem('saunaflow_health_check_accepted') === 'true';
+    if (!IS_CONFIGURED) {
+      setAuthReady(true);
+      setAppState(AppState.Auth);
+      return;
+    }
 
-      if (!healthCheckAccepted) {
-        setAppState(AppState.HealthCheck);
-      } else if (!session) {
-        setAppState(AppState.Auth);
-      } else {
-        setAppState(AppState.Loading);
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('username, goal')
-          .eq('id', session.user.id)
-          .single();
+    const initAuth = async () => {
+      try {
+        // Sprawdź sesję przy pierwszym montowaniu (np. powrót z maila)
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        if (error) throw error;
         
-        // PGRST116: "JSON object requested, but row count returned was 0" means no profile found, which is not an error here.
-        if (profileError && profileError.code !== 'PGRST116') {
-          console.error("Error fetching profile:", profileError);
-          setAppState(AppState.Auth);
-          return;
+        setSession(initialSession);
+        
+        // Jeśli sesja już jest (np. z localStorage lub właśnie sparsowana przez SDK)
+        if (initialSession) {
+          console.log("Initial session found on mount");
+          cleanUrl();
         }
+      } catch (e) {
+        console.error("Auth init error:", e);
+      } finally {
+        setAuthReady(true);
+      }
+    };
+    initAuth();
+
+    // Listener zmian stanu Auth
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
+      console.log(`Supabase Auth Event: ${event}`);
+      setSession(newSession);
+      
+      // Czyszczenie URL tylko przy sukcesie logowania
+      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+        if (newSession) {
+          cleanUrl();
+        }
+      }
+      
+      if (event === 'SIGNED_OUT') {
+        setAppState(AppState.Auth);
+      }
+      
+      setAuthReady(true);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [cleanUrl]);
+
+  // 2. Pobieranie danych profilu (wykonywane tylko gdy sesja jest gotowa)
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!authReady) return;
+      
+      if (!session) {
+        setAppState(AppState.Auth);
+        return;
+      }
+
+      const healthAccepted = localStorage.getItem('saunaflow_health_check_accepted') === 'true';
+      if (!healthAccepted) { setAppState(AppState.HealthCheck); return; }
+
+      // Dev Bypass logic
+      if (session.user.id === 'dev-user') {
+        setUsername("Dev Tester");
+        setGoal(Goal.Relax);
+        setAppState(AppState.Dashboard);
+        return;
+      }
+
+      setAppState(AppState.Loading);
+      try {
+        const { data: profile, error: pError } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        if (pError && pError.code !== 'PGRST116') throw pError;
 
         if (profile) {
           setUsername(profile.username);
           setGoal(profile.goal as Goal);
+          setUserPreferences({
+            defaultTimerStyle: profile.default_timer_style || DEFAULT_PREFERENCES.defaultTimerStyle,
+            defaultVolume: profile.default_volume ?? DEFAULT_PREFERENCES.defaultVolume,
+            defaultVoiceGuidance: profile.default_voice_guidance ?? DEFAULT_PREFERENCES.defaultVoiceGuidance,
+            defaultVoice: profile.default_voice || DEFAULT_PREFERENCES.defaultVoice,
+          });
 
-          const { data: history, error: historyError } = await supabase
-            .from('session_history')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .order('date', { ascending: false });
-
-          if (historyError) {
-            console.error("Error fetching session history:", historyError);
-          } else {
-            setSessionHistory(history || []);
-          }
+          const { data: history } = await supabase.from('session_history').select('*').eq('user_id', session.user.id).order('date', { ascending: false });
+          setSessionHistory(history || []);
           setAppState(AppState.Dashboard);
         } else {
           setAppState(AppState.Onboarding);
         }
-      }
-    });
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-  
-  // Bezpieczne sprawdzanie niespójnych stanów.
-  useEffect(() => {
-    const statesRequiringProtocol: AppState[] = [
-        AppState.SessionSettings,
-        AppState.WellbeingCheck,
-        AppState.InSession,
-    ];
-    if (statesRequiringProtocol.includes(appState) && !selectedProtocol) {
-      console.warn(`Niespójny stan: ${AppState[appState]} bez protokołu. Powrót do pulpitu.`);
-      setAppState(AppState.Dashboard);
-    }
-    if (appState === AppState.Summary && !lastCompletedSession) {
-      console.warn("Niespójny stan: Podsumowanie bez logu sesji. Powrót do pulpitu.");
-      setAppState(AppState.Dashboard);
-    }
-  }, [appState, selectedProtocol, lastCompletedSession]);
-
-  const handleHealthCheckComplete = () => {
-    localStorage.setItem('saunaflow_health_check_accepted', 'true');
-    if (!session) {
-        setAppState(AppState.Auth);
-    }
-    // The onAuthStateChange listener will handle fetching the profile or redirecting to Onboarding.
-  };
-  
-  const handleDevLogin = async () => {
-      // Create a mock session object. The user ID must be a valid UUID for Supabase RLS to work.
-      const devSession = {
-        user: { 
-            id: '8d12a197-24d9-43e8-8e8a-2e4a6b28eb7a', // A sample UUID
-            email: 'dev@saunaflow.com' 
-        },
-        // Add other required properties of the Session object, even if they are null
-        access_token: 'dev-token',
-        token_type: 'bearer',
-        expires_in: 3600,
-        expires_at: Math.floor(Date.now() / 1000) + 3600,
-        refresh_token: 'dev-refresh-token',
-      } as unknown as Session;
-      
-      setSession(devSession);
-      // Manually trigger the logic that onAuthStateChange would handle
-      setAppState(AppState.Loading);
-      const { data: profile } = await supabase
-          .from('profiles')
-          .select('username, goal')
-          .eq('id', devSession.user.id)
-          .single();
-
-      if (profile) {
-        setUsername(profile.username);
-        setGoal(profile.goal as Goal);
-        const { data: history } = await supabase
-            .from('session_history')
-            .select('*')
-            .eq('user_id', devSession.user.id)
-            .order('date', { ascending: false });
-        setSessionHistory(history || []);
-        setAppState(AppState.Dashboard);
-      } else {
+      } catch (err) {
+        console.error("Profile fetch error:", err);
         setAppState(AppState.Onboarding);
       }
-  };
+    };
 
-  const handleOnboardingComplete = async (name: string, selectedGoal: Goal) => {
-    if (!session) return;
-    
-    const { error } = await supabase.from('profiles').insert({
-      id: session.user.id,
-      username: name,
-      goal: selectedGoal
-    });
+    fetchUserData();
+  }, [session, authReady]);
 
-    if (error) {
-      console.error("Error saving profile:", error);
-      // TODO: Show an error message to the user
-    } else {
-      setUsername(name);
-      setGoal(selectedGoal);
-      setAppState(AppState.Dashboard);
-    }
-  };
-
-  const handleStartRitual = () => {
-    setAppState(AppState.ProtocolSelection);
-  };
-
-  const handleCreateCustomRitual = () => {
-    setAppState(AppState.CustomProtocol);
-  };
-
-  const handleProtocolSelected = (protocol: Protocol) => {
-    setSelectedProtocol(protocol);
-    setAppState(AppState.SessionSettings);
-  };
-
-  const handleProceedToWellbeing = (protocol: Protocol) => {
-    setSelectedProtocol(protocol);
-    setAppState(AppState.WellbeingCheck);
-  };
-
-  const handleStartSession = (protocol: Protocol) => {
-    setSelectedProtocol(protocol);
-    setAppState(AppState.InSession);
-  };
-  
-  const handleExitSession = () => {
-    setSelectedProtocol(null);
-    setAppState(AppState.Dashboard);
-  };
-
-  const handleSessionComplete = useCallback(async (sessionLog: SessionLog) => {
-    if (!session) return;
-
-    const { error } = await supabase.from('session_history').insert({
-      ...sessionLog,
-      user_id: session.user.id,
-    });
-
-    if (error) {
-      console.error("Error saving session history:", error);
-    }
-
-    const newHistory = [sessionLog, ...sessionHistory];
-    setSessionHistory(newHistory);
-    setLastCompletedSession(sessionLog);
-    setAppState(AppState.Summary);
-  }, [sessionHistory, session]);
-
-  const handleBackToDashboard = () => {
-    setSelectedProtocol(null);
-    setLastCompletedSession(null);
-    setAppState(AppState.Dashboard);
-  };
-  
-  const handleBackToProtocolSelection = () => {
-    setSelectedProtocol(null);
-    setAppState(AppState.ProtocolSelection);
-  }
-
-  const handleBackToSessionSettings = () => {
-    setAppState(AppState.SessionSettings);
-  };
-
-  const handleChangeGoal = async () => {
-    if (!session || !goal) return;
-    const newGoal = goal === Goal.Relax ? Goal.Performance : Goal.Relax;
-    setGoal(newGoal); // Optimistic UI update
-
-    const { error } = await supabase
-      .from('profiles')
-      .update({ goal: newGoal })
-      .eq('id', session.user.id);
-    
-    if (error) {
-        console.error("Error updating goal:", error);
-        setGoal(goal); // Revert on error
-    }
-  };
-
-  const handleResetApp = async () => {
-    await supabase.auth.signOut();
-    // Clear local state to prevent flash of old content
-    setSession(null);
-    setGoal(null);
-    setUsername(null);
-    setSessionHistory([]);
-    setLastCompletedSession(null);
-    // onAuthStateChange will set appState to Auth
-  };
-  
-  const handleEnterAdmin = () => {
-    setAppState(AppState.AdminPanel);
+  const handleDevLogin = () => {
+    const devSession = {
+      user: { id: 'dev-user', email: 'dev@saunaflow.com' },
+      access_token: 'dev-token',
+      expires_at: 9999999999,
+    } as Session;
+    setSession(devSession);
+    setAuthReady(true);
   };
 
   const renderContent = () => {
-    switch (appState) {
-      case AppState.Loading:
+    if (showDebug) return <DebugPanel session={session} onExit={() => setShowDebug(false)} />;
+    
+    // Blokada renderowania do czasu ustalenia stanu auth
+    if (!authReady) {
+      return (
+        <div className="flex flex-col items-center justify-center h-screen bg-slate-900 text-white space-y-4">
+          <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-slate-400 font-medium animate-pulse tracking-wide uppercase text-xs">Authenticating Session...</p>
+        </div>
+      );
+    }
+
+    if (appState === AppState.Loading && session) {
         return (
-          <div className="flex items-center justify-center h-screen bg-slate-900">
-            <div className="text-white text-xl">Loading SaunaFlow...</div>
-          </div>
-        );
-      case AppState.HealthCheck:
-        return <HealthCheckScreen onComplete={handleHealthCheckComplete} />;
-      case AppState.Auth:
-        return <AuthScreen onDevLogin={handleDevLogin} />;
-      case AppState.Onboarding:
-        return <OnboardingScreen onOnboardingComplete={handleOnboardingComplete} />;
-      case AppState.Dashboard:
-        return <DashboardScreen 
-                  session={session}
-                  username={username}
-                  goal={goal} 
-                  sessionHistory={sessionHistory}
-                  onStartRitual={handleStartRitual}
-                  onChangeGoal={handleChangeGoal}
-                  onResetApp={handleResetApp}
-                  onEnterAdmin={handleEnterAdmin}
-                />;
-      case AppState.ProtocolSelection:
-        return <ProtocolSelectionScreen 
-                  goal={goal} 
-                  onProtocolSelected={handleProtocolSelected}
-                  onBack={handleBackToDashboard}
-                  onCustomRitual={handleCreateCustomRitual}
-                />;
-      case AppState.CustomProtocol:
-        return <CustomProtocolScreen
-                  goal={goal}
-                  onStartProtocol={handleProtocolSelected}
-                  onBack={handleBackToProtocolSelection}
-                />;
-      case AppState.SessionSettings:
-        if (!selectedProtocol) return null;
-        return <SessionSettingsScreen 
-                  protocol={selectedProtocol}
-                  onStart={handleProceedToWellbeing}
-                  onBack={handleBackToProtocolSelection}
-                />;
-      case AppState.WellbeingCheck:
-        if (!selectedProtocol) return null;
-        return <WellbeingCheckScreen
-                    protocol={selectedProtocol}
-                    onComplete={handleStartSession}
-                    onBack={handleBackToSessionSettings}
-                />;
-      case AppState.InSession:
-        if (!selectedProtocol) return null;
-        return <SessionScreen 
-                  protocol={selectedProtocol} 
-                  onSessionComplete={handleSessionComplete} 
-                  onExit={handleExitSession}
-                />;
-      case AppState.Summary:
-        if (!lastCompletedSession) return null;
-        return <SummaryScreen 
-                  sessionLog={lastCompletedSession} 
-                  onDone={handleBackToDashboard} 
-                />;
-      case AppState.AdminPanel:
-        return <AdminPanel onExit={handleBackToDashboard} />;
-      default:
-        return (
-          <div className="flex items-center justify-center h-screen bg-slate-900">
-            <div className="text-white text-xl">Loading SaunaFlow...</div>
+          <div className="flex flex-col items-center justify-center h-screen bg-slate-900 text-white space-y-4">
+            <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-slate-400 font-medium tracking-wide uppercase text-xs">Loading Profile...</p>
           </div>
         );
     }
+    
+    switch (appState) {
+      case AppState.HealthCheck: return <HealthCheckScreen onComplete={() => setAppState(AppState.Auth)} />;
+      case AppState.Auth: return <AuthScreen onDevLogin={handleDevLogin} isSupabaseConfigured={IS_CONFIGURED} isTestMode={IS_TEST_MODE} onOpenDebug={() => setShowDebug(true)} />;
+      case AppState.Onboarding: return <OnboardingScreen onOnboardingComplete={(n, g) => { setUsername(n); setGoal(g); setAppState(AppState.Dashboard); }} />;
+      case AppState.Dashboard: return <DashboardScreen session={session} username={username} goal={goal} sessionHistory={sessionHistory} onStartRitual={() => setAppState(AppState.ProtocolSelection)} onResetApp={() => setAppState(AppState.Auth)} onEnterAdmin={() => setAppState(AppState.AdminPanel)} onViewHistoryDetail={(log) => { setSelectedHistoryLog(log); setAppState(AppState.HistoryDetail); }} onGoToProfileSettings={() => setAppState(AppState.ProfileSettings)} />;
+      case AppState.ProfileSettings: return <ProfileSettingsScreen session={session!} username={username} goal={goal} preferences={userPreferences} onSave={(n, g, p) => { setUsername(n); setGoal(g); setUserPreferences(p); setAppState(AppState.Dashboard); }} onBack={() => setAppState(AppState.Dashboard)} />;
+      case AppState.ProtocolSelection: return <ProtocolSelectionScreen goal={goal} onProtocolSelected={(p) => { setSelectedProtocol(p); setAppState(AppState.SessionSettings); }} onBack={() => setAppState(AppState.Dashboard)} onCustomRitual={() => {}} />;
+      case AppState.SessionSettings: return <SessionSettingsScreen protocol={selectedProtocol!} defaultVoiceGuidance={userPreferences.defaultVoiceGuidance} defaultVoice={userPreferences.defaultVoice} onStart={(p, s) => { setSelectedProtocol(p); setSessionSettings(s); setAppState(AppState.WellbeingCheck); }} onBack={() => setAppState(AppState.ProtocolSelection)} />;
+      case AppState.WellbeingCheck: return <WellbeingCheckScreen onComplete={(d) => { setAppState(AppState.InSession); }} onBack={() => setAppState(AppState.SessionSettings)} />;
+      case AppState.InSession: return <SessionScreen protocol={selectedProtocol!} onSessionComplete={(l) => { setSessionHistory([l as SessionLog, ...sessionHistory]); setLastCompletedSession(l as SessionLog); setAppState(AppState.Summary); }} onExit={() => setAppState(AppState.Dashboard)} voiceGuidanceEnabled={sessionSettings.voiceGuidance} voice={sessionSettings.voice} defaultTimerStyle={userPreferences.defaultTimerStyle} defaultVolume={userPreferences.defaultVolume} />;
+      case AppState.Summary: return <SummaryScreen sessionLog={lastCompletedSession!} onDone={() => setAppState(AppState.Dashboard)} />;
+      case AppState.AdminPanel: return <AdminPanel session={session} onExit={() => setAppState(AppState.Dashboard)} />;
+      case AppState.HistoryDetail: return <HistoryDetailScreen sessionLog={selectedHistoryLog!} onBack={() => setAppState(AppState.Dashboard)} />;
+      default: return null;
+    }
   };
 
-  return <div className="min-h-screen bg-slate-900">{renderContent()}</div>;
+  return <div className="min-h-screen bg-slate-900 font-sans relative">
+    {renderContent()}
+    {IS_TEST_MODE && authReady && !showDebug && (
+        <button 
+          onClick={() => setShowDebug(true)}
+          className="fixed bottom-4 right-4 bg-rose-600 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-full shadow-lg hover:bg-rose-500 z-50 transition-all active:scale-95"
+        >
+          Diagnostic Panel
+        </button>
+    )}
+  </div>;
 };
 
 export default App;

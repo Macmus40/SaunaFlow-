@@ -1,5 +1,5 @@
 {
-  "name": "saunaflow-v3",
+  "name": "copy-of-saunaflow-v4",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,7 +13,8 @@
     "react-dom": "^19.2.0",
     "@google/genai": "^1.22.0",
     "@netlify/functions": "^5.0.0",
-    "@supabase/supabase-js": "^2.45.0"
+    "@supabase/supabase-js": "^2.45.0",
+    "@supabase/auth-js": "^2.78.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

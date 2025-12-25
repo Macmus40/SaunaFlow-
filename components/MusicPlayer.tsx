@@ -3,11 +3,15 @@ import { PlayIcon, PauseIcon, RewindIcon, FastForwardIcon, VolumeUpIcon } from '
 import { useLanguage } from '../contexts/LanguageContext';
 import { PLAYLIST } from '../constants';
 
-export const MusicPlayer: React.FC = () => {
+interface MusicPlayerProps {
+    defaultVolume?: number;
+}
+
+export const MusicPlayer: React.FC<MusicPlayerProps> = ({ defaultVolume = 0.5 }) => {
   const { t } = useLanguage();
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(defaultVolume);
   const audioRef = useRef<HTMLAudioElement>(null);
   
   // This ref helps manage autoplaying the next track

@@ -1,19 +1,26 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <base href="/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SaunaFlow</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      // Fallback dla AI Studio / Preview
+      window.__ENV__ = {
+        VITE_SUPABASE_URL: "https://ipdzreofebvkeizqpnhm.supabase.co",
+        VITE_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwZHpyZW9mZWJ2a2VpenFwbmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5MjExMzMsImV4cCI6MjA3NzQ5NzEzM30.n1aqL1O6KJf0xRnnjZL8g67adPemtuIW7AoACWUGpqY",
+        VITE_TEST_MODE: "true" 
+      };
+    </script>
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
-      }
+      body { font-family: 'Inter', sans-serif; background-color: #0f172a; margin: 0; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
     </style>
   <script type="importmap">
 {
@@ -23,7 +30,8 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.22.0",
     "@netlify/functions": "https://aistudiocdn.com/@netlify/functions@^5.0.0",
-    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.45.0"
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.45.0",
+    "@supabase/auth-js": "https://aistudiocdn.com/@supabase/auth-js@^2.78.0"
   }
 }
 </script>

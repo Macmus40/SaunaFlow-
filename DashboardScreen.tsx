@@ -61,6 +61,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ session, usern
   };
   
   const handleSignOut = async () => {
+    // Oficjalne API Supabase v2 używa metody signOut()
     await supabase.auth.signOut();
   };
 

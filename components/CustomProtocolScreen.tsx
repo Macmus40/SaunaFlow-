@@ -5,7 +5,6 @@ import type { Protocol, Stage } from '../types';
 import { FireIcon, SnowflakeIcon, HeartIcon, PlusIcon, MinusIcon } from './icons/Icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
-
 interface CustomProtocolScreenProps {
   goal: Goal | null;
   onStartProtocol: (protocol: Protocol) => void;
@@ -55,7 +54,7 @@ const StageConfig: React.FC<{
 
 export const CustomProtocolScreen: React.FC<CustomProtocolScreenProps> = ({ goal, onStartProtocol, onBack }) => {
     const { t } = useLanguage();
-    const [name, setName] = useState(t('custom_ritual_default_name'));
+    const [name, setName] = useState('');
     const [cycles, setCycles] = useState(3);
     const [sauna, setSauna] = useState({ enabled: true, duration: 15 });
     const [cold, setCold] = useState({ enabled: true, duration: 2 });
@@ -72,25 +71,22 @@ export const CustomProtocolScreen: React.FC<CustomProtocolScreenProps> = ({ goal
         try {
             const prompt = t('ai_prompt', { level: t(`experience_${level}`) });
             
-            // Call the Netlify serverless function instead of the Gemini API directly
             const response = await fetch('/.netlify/functions/get-ai-suggestion', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt }),
             });
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ error: 'An unknown server error occurred.' }));
-                throw new Error(errorData.error || `Server error: ${response.statusText}`);
+                const errorData = await response.json().catch(() => ({ error: 'Failed to parse error response' }));
+                throw new Error(errorData.error || `Request failed with status ${response.status}`);
             }
-
+            
             const suggestion = await response.json();
 
             setCycles(suggestion.cycles);
             setSauna(prev => ({ ...prev, duration: suggestion.saunaDuration }));
-            setCold({ enabled: suggestion.isColdEnabled, duration: suggestion.coldDuration });
+            setCold({ enabled: suggestion.isColdEnabled, duration: suggestion.coldDuration || 0 });
             setRest(prev => ({ ...prev, duration: suggestion.restDuration }));
 
         } catch (error) {
@@ -114,7 +110,7 @@ export const CustomProtocolScreen: React.FC<CustomProtocolScreenProps> = ({ goal
 
         const customProtocol: Protocol = {
             id: `custom-${Date.now()}`,
-            name: name || t('custom_ritual_default_name'),
+            name: name.trim() || t('custom_ritual_default_name'),
             description: 'A personalized sauna ritual.',
             cycles,
             stages,
@@ -139,6 +135,7 @@ export const CustomProtocolScreen: React.FC<CustomProtocolScreenProps> = ({ goal
                             id="ritual-name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            placeholder={t('custom_ritual_default_name')}
                             className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-amber-500 focus:border-amber-500"
                         />
                     </div>

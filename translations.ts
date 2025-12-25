@@ -1,6 +1,8 @@
 
 export const translations: Record<string, Record<string, string>> = {
   en: {
+    lang_code: 'en-US',
+    goal_label: "Goal: {goal}",
     // Onboarding
     welcome_title: "Welcome to SaunaFlow",
     welcome_subtitle: "Your personal guide to the ancient ritual of sauna.",
@@ -19,6 +21,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "your@email.com",
     auth_sending: "Sending...",
     auth_send_link: "Send Magic Link",
+    auth_magic_link_sent: "Check your email for the login link!",
+    auth_or: "or",
+    auth_dev_login: "Continue as developer",
 
     // Health Check
     health_check_title: "Safety Checklist",
@@ -34,7 +39,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Welcome, {username}!",
     current_goal: "Your current goal: {goal}",
-    change_goal: "(Change)",
     sign_out: "Sign Out",
     stat_streak: "Day Streak",
     stat_total_minutes: "Total Minutes",
@@ -47,6 +51,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "cycles",
     reset_app: "Reset App",
     reset_app_confirm: "Are you sure you want to reset the application? All your history and settings will be permanently deleted.",
+    
+    // Profile Settings
+    profile_settings_title: "Profile & Settings",
+    profile_info_title: "Profile Information",
+    user_name_label: "User Name",
+    email_label: "Email",
+    primary_goal_label: "Primary Goal",
+    session_prefs_title: "Session Preferences",
+    default_timer_style_label: "Default Timer Style",
+    timer_style_circle: "Circle",
+    timer_style_bar: "Bar",
+    timer_style_digital: "Digital",
+    timer_style_hourglass: "Hourglass",
+    default_volume_label: "Default Music Volume",
+    default_voice_label: "Default Voice Assistant",
+    voice_female: "Female",
+    voice_male: "Male",
+    voice_Kore: "Kore (Female)",
+    voice_Puck: "Puck (Male)",
+    voice_Charon: "Charon (Male)",
+    voice_Fenrir: "Fenrir (Female)",
+    voice_Zephyr: "Zephyr (Male)",
+    save_changes: "Save Changes",
+    cancel: "Cancel",
 
     // Protocol Selection
     protocol_title_relax: "Choose Your Relaxation Ritual",
@@ -76,7 +104,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Session Settings",
-    session_settings_subtitle: "Adjust temperatures to tailor the ritual to your environment.",
+    session_settings_subtitle: "Adjust your ritual to tailor it to your environment and preferences.",
     sauna_temp: "Sauna Temperature",
     water_temp: "Water Temperature",
     adjusted_times: "Adjusted Times",
@@ -85,6 +113,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Start with Adjusted Times",
     start_original: "Use Original Times",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Voice Guidance",
+    audio_guidance_desc: "Enable spoken cues for each stage.",
+    assistant_voice_label: "Assistant Voice",
 
     // Wellbeing Check
     wellbeing_check_title: "Pre-Ritual Check-in",
@@ -119,14 +150,25 @@ export const translations: Record<string, Record<string, string>> = {
     end_stage_label: "End Stage",
     play_label: "Play",
     pause_label: "Pause",
+    ai_generating_audio_title: "Generating audio...",
+    audio_guidance_start_SAUNA: "Begin Sauna. Relax and focus on your breath.",
+    audio_guidance_start_COLD: "Begin Cold Plunge. Control your breathing.",
+    audio_guidance_start_REST: "Begin Rest. Allow your body to recover.",
+    audio_guidance_end_SAUNA: "Sauna complete. Prepare for the cold.",
+    audio_guidance_end_COLD: "Cold plunge complete. Prepare to rest.",
+    audio_guidance_end_REST: "Rest complete. Preparing for the next cycle.",
+    audio_guidance_session_complete: "Final cycle complete. Well done.",
 
-    // Summary
+    // Summary & History
     summary_title: "Ritual Complete",
     summary_subtitle: "You've completed the {protocolName} ritual.",
     summary_total_time: "Total Time",
     summary_cycles_completed: "Cycles Completed",
+    wellbeing_summary_title: "Your Pre-Ritual Check-in",
     minutes: "minutes",
     done: "Done",
+    view_details: "View Details",
+    history_detail_title: "Session Details",
 
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -183,6 +225,8 @@ export const translations: Record<string, Record<string, string>> = {
     tip_rest_3: 'This is a great time for mindfulness. Pay attention to the tingling sensations in your skin and your heartbeat slowing down.',
   },
   pl: {
+    lang_code: 'pl-PL',
+    goal_label: "Cel: {goal}",
     // Onboarding
     welcome_title: "Witaj w SaunaFlow",
     welcome_subtitle: "Twój osobisty przewodnik po starożytnym rytuale sauny.",
@@ -201,6 +245,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "twoj@email.com",
     auth_sending: "Wysyłanie...",
     auth_send_link: "Wyślij Magiczny Link",
+    auth_magic_link_sent: "Sprawdź swoją skrzynkę e-mail, aby znaleźć link do logowania!",
+    auth_or: "lub",
+    auth_dev_login: "Kontynuuj jako deweloper",
     
     // Health Check
     health_check_title: "Lista Kontrolna Bezpieczeństwa",
@@ -216,7 +263,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Witaj, {username}!",
     current_goal: "Twój obecny cel: {goal}",
-    change_goal: "(Zmień)",
     sign_out: "Wyloguj się",
     stat_streak: "Dni z rzędu",
     stat_total_minutes: "Suma minut",
@@ -229,6 +275,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "cykle",
     reset_app: "Zresetuj Aplikację",
     reset_app_confirm: "Czy na pewno chcesz zresetować aplikację? Cała Twoja historia i ustawienia zostaną trwale usunięte.",
+    
+    // Profile Settings
+    profile_settings_title: "Profil i Ustawienia",
+    profile_info_title: "Informacje o Profilu",
+    user_name_label: "Nazwa użytkownika",
+    email_label: "E-mail",
+    primary_goal_label: "Główny Cel",
+    session_prefs_title: "Preferencje Sesji",
+    default_timer_style_label: "Domyślny Styl Timera",
+    timer_style_circle: "Koło",
+    timer_style_bar: "Pasek",
+    timer_style_digital: "Cyfrowy",
+    timer_style_hourglass: "Klepsydra",
+    default_volume_label: "Domyślna Głośność Muzyki",
+    default_voice_label: "Domyślny Głos Asystenta",
+    voice_female: "Żeński",
+    voice_male: "Męski",
+    voice_Kore: "Kore (Żeński)",
+    voice_Puck: "Puck (Męski)",
+    voice_Charon: "Charon (Męski)",
+    voice_Fenrir: "Fenrir (Żeński)",
+    voice_Zephyr: "Zephyr (Męski)",
+    save_changes: "Zapisz Zmiany",
+    cancel: "Anuluj",
 
     // Protocol Selection
     protocol_title_relax: "Wybierz Rytuał Relaksacyjny",
@@ -258,7 +328,7 @@ export const translations: Record<string, Record<string, string>> = {
     
     // Session Settings
     session_settings_title: "Ustawienia Sesji",
-    session_settings_subtitle: "Dostosuj temperatury, aby dopasować rytuał do Twoich warunków.",
+    session_settings_subtitle: "Dostosuj swój rytuał do otoczenia i własnych preferencji.",
     sauna_temp: "Temperatura Sauny",
     water_temp: "Temperatura Wody",
     adjusted_times: "Dostosowane Czasy",
@@ -267,6 +337,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Zacznij z Dostosowanymi Czasami",
     start_original: "Użyj Oryginalnych Czasów",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Przewodnik Głosowy",
+    audio_guidance_desc: "Włącz wskazówki głosowe dla każdego etapu.",
+    assistant_voice_label: "Głos Asystenta",
 
     // Wellbeing Check
     wellbeing_check_title: "Sprawdzenie samopoczucia przed rytuałem",
@@ -301,14 +374,25 @@ export const translations: Record<string, Record<string, string>> = {
     end_stage_label: "Zakończ Etap",
     play_label: "Odtwarzaj",
     pause_label: "Pauza",
+    ai_generating_audio_title: "Generowanie dźwięku...",
+    audio_guidance_start_SAUNA: "Rozpocznij Saunę. Zrelaksuj się i skup na oddechu.",
+    audio_guidance_start_COLD: "Rozpocznij Zanurzenie w Zimnie. Kontroluj oddech.",
+    audio_guidance_start_REST: "Rozpocznij Odpoczynek. Pozwól ciału się zregenerować.",
+    audio_guidance_end_SAUNA: "Sauna zakończona. Przygotuj się na zimno.",
+    audio_guidance_end_COLD: "Zanurzenie w zimnie zakończone. Przygotuj się na odpoczynek.",
+    audio_guidance_end_REST: "Odpoczynek zakończony. Przygotowanie do następnego cyklu.",
+    audio_guidance_session_complete: "Ostatni cykl zakończony. Dobra robota.",
 
-    // Summary
+    // Summary & History
     summary_title: "Rytuał Zakończony",
     summary_subtitle: "Ukończyłeś rytuał {protocolName}.",
     summary_total_time: "Całkowity czas",
     summary_cycles_completed: "Ukończone cykle",
+    wellbeing_summary_title: "Twoje samopoczucie przed rytuałem",
     minutes: "minut",
     done: "Gotowe",
+    view_details: "Zobacz szczegóły",
+    history_detail_title: "Szczegóły Sesji",
 
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -365,6 +449,8 @@ export const translations: Record<string, Record<string, string>> = {
     tip_rest_3: 'To świetny czas na uważność. Zwróć uwagę na mrowienie w skórze i zwalniające bicie serca.',
   },
   de: {
+    lang_code: 'de-DE',
+    goal_label: "Ziel: {goal}",
     // Onboarding
     welcome_title: "Willkommen bei SaunaFlow",
     welcome_subtitle: "Ihr persönlicher Leitfaden für das alte Ritual der Sauna.",
@@ -383,6 +469,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "deine@email.de",
     auth_sending: "Wird gesendet...",
     auth_send_link: "Magic Link senden",
+    auth_magic_link_sent: "Überprüfen Sie Ihre E-Mails auf den Anmelde-Link!",
+    auth_or: "oder",
+    auth_dev_login: "Als Entwickler fortfahren",
 
     // Health Check
     health_check_title: "Sicherheits-Checkliste",
@@ -398,7 +487,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Willkommen, {username}!",
     current_goal: "Ihr aktuelles Ziel: {goal}",
-    change_goal: "(Ändern)",
     sign_out: "Abmelden",
     stat_streak: "Tage in Folge",
     stat_total_minutes: "Gesamtminuten",
@@ -411,6 +499,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "Zyklen",
     reset_app: "App zurücksetzen",
     reset_app_confirm: "Sind Sie sicher, dass Sie die Anwendung zurücksetzen möchten? Ihr gesamter Verlauf und Ihre Einstellungen werden dauerhaft gelöscht.",
+    
+    // Profile Settings
+    profile_settings_title: "Profil & Einstellungen",
+    profile_info_title: "Profilinformationen",
+    user_name_label: "Benutzername",
+    email_label: "E-Mail",
+    primary_goal_label: "Hauptziel",
+    session_prefs_title: "Sitzungspräferenzen",
+    default_timer_style_label: "Standard-Timer-Stil",
+    timer_style_circle: "Kreis",
+    timer_style_bar: "Balken",
+    timer_style_digital: "Digital",
+    timer_style_hourglass: "Sanduhr",
+    default_volume_label: "Standard-Musik-Lautstärke",
+    default_voice_label: "Standard-Stimmassistent",
+    voice_female: "Weiblich",
+    voice_male: "Männlich",
+    voice_Kore: "Kore (Weiblich)",
+    voice_Puck: "Puck (Männlich)",
+    voice_Charon: "Charon (Männlich)",
+    voice_Fenrir: "Fenrir (Weiblich)",
+    voice_Zephyr: "Zephyr (Männlich)",
+    save_changes: "Änderungen speichern",
+    cancel: "Abbrechen",
 
     // Protocol Selection
     protocol_title_relax: "Wählen Sie Ihr Entspannungsritual",
@@ -440,7 +552,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Sitzungseinstellungen",
-    session_settings_subtitle: "Passen Sie die Temperaturen an, um das Ritual an Ihre Umgebung anzupassen.",
+    session_settings_subtitle: "Passen Sie Ihr Ritual an Ihre Umgebung und Vorlieben an.",
     sauna_temp: "Saunatemperatur",
     water_temp: "Wassertemperatur",
     adjusted_times: "Angepasste Zeiten",
@@ -449,6 +561,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Mit angepassten Zeiten starten",
     start_original: "Originalzeiten verwenden",
     stage_duration_display: "{stageName}: {duration} Min",
+    audio_guidance_label: "Sprachführung",
+    audio_guidance_desc: "Aktivieren Sie gesprochene Hinweise für jede Phase.",
+    assistant_voice_label: "Assistentenstimme",
 
     // Wellbeing Check
     wellbeing_check_title: "Check-in vor dem Ritual",
@@ -483,14 +598,25 @@ export const translations: Record<string, Record<string, string>> = {
     end_stage_label: "Phase beenden",
     play_label: "Abspielen",
     pause_label: "Pause",
+    ai_generating_audio_title: "Audio wird generiert...",
+    audio_guidance_start_SAUNA: "Beginnen Sie die Sauna. Entspannen Sie sich und konzentrieren Sie sich auf Ihren Atem.",
+    audio_guidance_start_COLD: "Beginnen Sie das Kaltbad. Kontrollieren Sie Ihre Atmung.",
+    audio_guidance_start_REST: "Beginnen Sie die Ruhephase. Erlauben Sie Ihrem Körper, sich zu erholen.",
+    audio_guidance_end_SAUNA: "Sauna beendet. Bereiten Sie sich auf die Kälte vor.",
+    audio_guidance_end_COLD: "Kaltbad beendet. Bereiten Sie sich auf die Ruhephase vor.",
+    audio_guidance_end_REST: "Ruhephase beendet. Vorbereitung auf den nächsten Zyklus.",
+    audio_guidance_session_complete: "Letzter Zyklus abgeschlossen. Gut gemacht.",
 
-    // Summary
+    // Summary & History
     summary_title: "Ritual abgeschlossen",
     summary_subtitle: "Sie haben das {protocolName}-Ritual abgeschlossen.",
     summary_total_time: "Gesamtzeit",
     summary_cycles_completed: "Abgeschlossene Zyklen",
+    wellbeing_summary_title: "Ihr Check-in vor dem Ritual",
     minutes: "Minuten",
     done: "Fertig",
+    view_details: "Details anzeigen",
+    history_detail_title: "Sitzungsdetails",
 
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -521,6 +647,8 @@ export const translations: Record<string, Record<string, string>> = {
     protocol_perf_2_desc: 'Ein intensiver Zyklus für erfahrene Benutzer, um die Erholung und den hormetischen Stress zu maximieren.',
   },
   da: {
+    lang_code: 'da-DK',
+    goal_label: "Mål: {goal}",
     // Onboarding
     welcome_title: "Velkommen til SaunaFlow",
     welcome_subtitle: "Din personlige guide til det gamle saunaritual.",
@@ -539,6 +667,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "din@email.dk",
     auth_sending: "Sender...",
     auth_send_link: "Send Magisk Link",
+    auth_magic_link_sent: "Tjek din e-mail for login-linket!",
+    auth_or: "eller",
+    auth_dev_login: "Fortsæt som udvikler",
 
     // Health Check
     health_check_title: "Sikkerhedstjekliste",
@@ -554,7 +685,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Velkommen, {username}!",
     current_goal: "Dit nuværende mål: {goal}",
-    change_goal: "(Skift)",
     sign_out: "Log ud",
     stat_streak: "Dage i træk",
     stat_total_minutes: "Samlede minutter",
@@ -567,6 +697,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "cyklusser",
     reset_app: "Nulstil App",
     reset_app_confirm: "Er du sikker på, at du vil nulstille applikationen? Hele din historik og alle dine indstillinger vil blive slettet permanent.",
+    
+    // Profile Settings
+    profile_settings_title: "Profil & Indstillinger",
+    profile_info_title: "Profiloplysninger",
+    user_name_label: "Brugernavn",
+    email_label: "E-mail",
+    primary_goal_label: "Primært Mål",
+    session_prefs_title: "Sessionspræferencer",
+    default_timer_style_label: "Standard Timer-stil",
+    timer_style_circle: "Cirkel",
+    timer_style_bar: "Bjælke",
+    timer_style_digital: "Digital",
+    timer_style_hourglass: "Timeglas",
+    default_volume_label: "Standard Musiklydstyrke",
+    default_voice_label: "Standard Stemmeassistent",
+    voice_female: "Kvinde",
+    voice_male: "Mand",
+    voice_Kore: "Kore (Kvinde)",
+    voice_Puck: "Puck (Mand)",
+    voice_Charon: "Charon (Mand)",
+    voice_Fenrir: "Fenrir (Kvinde)",
+    voice_Zephyr: "Zephyr (Mand)",
+    save_changes: "Gem Ændringer",
+    cancel: "Annuller",
 
     // Protocol Selection
     protocol_title_relax: "Vælg Dit Afslapningsritual",
@@ -596,7 +750,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Sessionsindstillinger",
-    session_settings_subtitle: "Juster temperaturer for at skræddersy ritualet til dit miljø.",
+    session_settings_subtitle: "Juster dit ritual for at skræddersy det til dit miljø og dine præferencer.",
     sauna_temp: "Saunatemperatur",
     water_temp: "Vandtemperatur",
     adjusted_times: "Justerede Tider",
@@ -605,6 +759,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Start med Justerede Tider",
     start_original: "Brug Originale Tider",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Stemmeguide",
+    audio_guidance_desc: "Aktiver talte signaler for hver fase.",
+    assistant_voice_label: "Assistentens Stemme",
 
     // Wellbeing Check
     wellbeing_check_title: "Check-in før Ritualet",
@@ -632,14 +789,25 @@ export const translations: Record<string, Record<string, string>> = {
     close: "Luk",
     next_step: "Næste Trin",
     end_stage: "Afslut",
+    ai_generating_audio_title: "Genererer lyd...",
+    audio_guidance_start_SAUNA: "Begynd Sauna. Slap af og fokuser på dit åndedræt.",
+    audio_guidance_start_COLD: "Begynd Koldt Dyk. Kontroller din vejrtrækning.",
+    audio_guidance_start_REST: "Begynd Hvile. Tillad din krop at restituere.",
+    audio_guidance_end_SAUNA: "Sauna afsluttet. Forbered dig på kulden.",
+    audio_guidance_end_COLD: "Koldt dyk afsluttet. Forbered dig på at hvile.",
+    audio_guidance_end_REST: "Hvile afsluttet. Forbereder næste cyklus.",
+    audio_guidance_session_complete: "Sidste cyklus afsluttet. Godt klaret.",
 
-    // Summary
+    // Summary & History
     summary_title: "Ritual Gennemført",
     summary_subtitle: "Du har gennemført {protocolName}-ritualet.",
     summary_total_time: "Samlet tid",
     summary_cycles_completed: "Gennemførte cyklusser",
+    wellbeing_summary_title: "Dit Check-in Før Ritualet",
     minutes: "minutter",
     done: "Færdig",
+    view_details: "Se detaljer",
+    history_detail_title: "Sessionsdetaljer",
 
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -648,6 +816,8 @@ export const translations: Record<string, Record<string, string>> = {
     music_sleepy_cat_title: 'Søvnig Kat',
   },
   sv: {
+    lang_code: 'sv-SE',
+    goal_label: "Mål: {goal}",
     // Onboarding
     welcome_title: "Välkommen till SaunaFlow",
     welcome_subtitle: "Din personliga guide till den uråldriga basturitualen.",
@@ -666,6 +836,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "din@epost.se",
     auth_sending: "Skickar...",
     auth_send_link: "Skicka Magisk Länk",
+    auth_magic_link_sent: "Kontrollera din e-post för inloggningslänken!",
+    auth_or: "eller",
+    auth_dev_login: "Fortsätt som utvecklare",
 
     // Health Check
     health_check_title: "Säkerhetschecklista",
@@ -681,7 +854,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Välkommen, {username}!",
     current_goal: "Ditt nuvarande mål: {goal}",
-    change_goal: "(Ändra)",
     sign_out: "Logga ut",
     stat_streak: "Dagar i följd",
     stat_total_minutes: "Totala minuter",
@@ -694,6 +866,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "cykler",
     reset_app: "Återställ App",
     reset_app_confirm: "Är du säker på att du vill återställa applikationen? All din historik och alla inställningar kommer att raderas permanent.",
+
+    // Profile Settings
+    profile_settings_title: "Profil & Inställningar",
+    profile_info_title: "Profilinformation",
+    user_name_label: "Användarnamn",
+    email_label: "E-post",
+    primary_goal_label: "Primärt Mål",
+    session_prefs_title: "Sessionspreferenser",
+    default_timer_style_label: "Standard Timer-stil",
+    timer_style_circle: "Cirkel",
+    timer_style_bar: "Stapel",
+    timer_style_digital: "Digital",
+    timer_style_hourglass: "Timglas",
+    default_volume_label: "Standard Musikvolym",
+    default_voice_label: "Standard Röstassistent",
+    voice_female: "Kvinna",
+    voice_male: "Man",
+    voice_Kore: "Kore (Kvinna)",
+    voice_Puck: "Puck (Man)",
+    voice_Charon: "Charon (Man)",
+    voice_Fenrir: "Fenrir (Kvinna)",
+    voice_Zephyr: "Zephyr (Man)",
+    save_changes: "Spara Ändringar",
+    cancel: "Avbryt",
 
     // Protocol Selection
     protocol_title_relax: "Välj Din Avkopplingsritual",
@@ -723,7 +919,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Sessionsinställningar",
-    session_settings_subtitle: "Justera temperaturer för att anpassa ritualen till din miljö.",
+    session_settings_subtitle: "Justera din ritual för att anpassa den till din miljö och dina preferenser.",
     sauna_temp: "Bastutemperatur",
     water_temp: "Vattentemperatur",
     adjusted_times: "Justerade Tider",
@@ -732,6 +928,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Börja med Justerade Tider",
     start_original: "Använd Originaltider",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Röstvägledning",
+    audio_guidance_desc: "Aktivera talade ledtrådar för varje steg.",
+    assistant_voice_label: "Assistentens Röst",
 
     // Wellbeing Check
     wellbeing_check_title: "Incheckning före Ritualen",
@@ -759,14 +958,25 @@ export const translations: Record<string, Record<string, string>> = {
     close: "Stäng",
     next_step: "Nästa Steg",
     end_stage: "Avsluta",
+    ai_generating_audio_title: "Genererar ljud...",
+    audio_guidance_start_SAUNA: "Börja basta. Koppla av och fokusera på din andning.",
+    audio_guidance_start_COLD: "Börja kalldopp. Kontrollera din andning.",
+    audio_guidance_start_REST: "Börja vila. Låt din kropp återhämta sig.",
+    audio_guidance_end_SAUNA: "Bastu avslutad. Förbered dig för kylan.",
+    audio_guidance_end_COLD: "Kalldopp avslutat. Förbered dig för att vila.",
+    audio_guidance_end_REST: "Vila avslutad. Förbereder nästa cykel.",
+    audio_guidance_session_complete: "Sista cykeln avslutad. Bra jobbat.",
     
-    // Summary
+    // Summary & History
     summary_title: "Ritual Slutförd",
     summary_subtitle: "Du har slutfört {protocolName}-ritualen.",
     summary_total_time: "Total tid",
     summary_cycles_completed: "Slutförda cykler",
+    wellbeing_summary_title: "Din Incheckning före Ritualen",
     minutes: "minuter",
     done: "Klar",
+    view_details: "Visa detaljer",
+    history_detail_title: "Sessionsdetaljer",
     
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -775,6 +985,8 @@ export const translations: Record<string, Record<string, string>> = {
     music_sleepy_cat_title: 'Sömnig Katt',
   },
   no: {
+    lang_code: 'no-NO',
+    goal_label: "Mål: {goal}",
     // Onboarding
     welcome_title: "Velkommen til SaunaFlow",
     welcome_subtitle: "Din personlige guide til det gamle badsturitualet.",
@@ -793,6 +1005,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "din@epost.no",
     auth_sending: "Sender...",
     auth_send_link: "Send Magisk Lenke",
+    auth_magic_link_sent: "Sjekk e-posten din for innloggingslenken!",
+    auth_or: "eller",
+    auth_dev_login: "Fortsett som utvikler",
 
     // Health Check
     health_check_title: "Sikkerhetssjekkliste",
@@ -808,7 +1023,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Velkommen, {username}!",
     current_goal: "Ditt nåværende mål: {goal}",
-    change_goal: "(Endre)",
     sign_out: "Logg ut",
     stat_streak: "Dager på rad",
     stat_total_minutes: "Totale minutter",
@@ -821,6 +1035,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "sykluser",
     reset_app: "Tilbakestill App",
     reset_app_confirm: "Er du sikker på at du vil tilbakestille applikasjonen? All din historikk og alle innstillinger vil bli slettet permanent.",
+
+    // Profile Settings
+    profile_settings_title: "Profil og Innstillinger",
+    profile_info_title: "Profilinformasjon",
+    user_name_label: "Brukernavn",
+    email_label: "E-post",
+    primary_goal_label: "Primært Mål",
+    session_prefs_title: "Øktpreferanser",
+    default_timer_style_label: "Standard Timer-stil",
+    timer_style_circle: "Sirkel",
+    timer_style_bar: "Stolpe",
+    timer_style_digital: "Digital",
+    timer_style_hourglass: "Timeglass",
+    default_volume_label: "Standard Musik-volum",
+    default_voice_label: "Standard Stemmeassistent",
+    voice_female: "Kvinne",
+    voice_male: "Mann",
+    voice_Kore: "Kore (Kvinne)",
+    voice_Puck: "Puck (Mann)",
+    voice_Charon: "Charon (Mann)",
+    voice_Fenrir: "Fenrir (Kvinne)",
+    voice_Zephyr: "Zephyr (Mann)",
+    save_changes: "Lagre Endringer",
+    cancel: "Avbryt",
 
     // Protocol Selection
     protocol_title_relax: "Velg Ditt Avslapningsritual",
@@ -850,7 +1088,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Øktinnstillinger",
-    session_settings_subtitle: "Juster temperaturene for å skreddersy ritualet til ditt miljø.",
+    session_settings_subtitle: "Juster ritualet ditt for å skreddersy det til miljøet og dine preferanser.",
     sauna_temp: "Badstutemperatur",
     water_temp: "Vanntemperatur",
     adjusted_times: "Justerte Tider",
@@ -859,6 +1097,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Start med Justerte Tider",
     start_original: "Bruk Originale Tider",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Stemmeveiledning",
+    audio_guidance_desc: "Aktiver talte signaler for hver etappe.",
+    assistant_voice_label: "Assistentens Stemme",
 
     // Wellbeing Check
     wellbeing_check_title: "Innsjekking før Ritualet",
@@ -886,14 +1127,25 @@ export const translations: Record<string, Record<string, string>> = {
     close: "Lukk",
     next_step: "Neste Steg",
     end_stage: "Avslutt",
+    ai_generating_audio_title: "Genererer lyd...",
+    audio_guidance_start_SAUNA: "Start badstue. Slapp av og fokuser på pusten.",
+    audio_guidance_start_COLD: "Start kaldkulp. Kontroller pusten.",
+    audio_guidance_start_REST: "Start hvile. La kroppen restituere.",
+    audio_guidance_end_SAUNA: "Badstue ferdig. Forbered deg på kulden.",
+    audio_guidance_end_COLD: "Kaldkulp ferdig. Forbered deg på å hvile.",
+    audio_guidance_end_REST: "Hvile ferdig. Forbereder neste syklus.",
+    audio_guidance_session_complete: "Siste syklus fullført. Godt gjort.",
     
-    // Summary
+    // Summary & History
     summary_title: "Ritual Fullført",
     summary_subtitle: "Du har fullført {protocolName}-ritualet.",
     summary_total_time: "Total tid",
     summary_cycles_completed: "Fullførte sykluser",
+    wellbeing_summary_title: "Din Innsjekking før Ritualet",
     minutes: "minutter",
     done: "Ferdig",
+    view_details: "Vis detaljer",
+    history_detail_title: "Øktdetaljer",
     
     // Music Player
     music_artist_mixkit: 'Mixkit',
@@ -902,6 +1154,8 @@ export const translations: Record<string, Record<string, string>> = {
     music_sleepy_cat_title: 'Søvnig Katt',
   },
   fi: {
+    lang_code: 'fi-FI',
+    goal_label: "Tavoite: {goal}",
     // Onboarding
     welcome_title: "Tervetuloa SaunaFlow'hun",
     welcome_subtitle: "Henkilökohtainen oppaasi muinaiseen saunarituaaliin.",
@@ -920,6 +1174,9 @@ export const translations: Record<string, Record<string, string>> = {
     email_placeholder: "sinun@sähköposti.fi",
     auth_sending: "Lähetetään...",
     auth_send_link: "Lähetä Taikalinkki",
+    auth_magic_link_sent: "Tarkista sähköpostisi kirjautumislinkin varalta!",
+    auth_or: "tai",
+    auth_dev_login: "Jatka kehittäjänä",
 
     // Health Check
     health_check_title: "Turvallisuuden Tarkistuslista",
@@ -935,7 +1192,6 @@ export const translations: Record<string, Record<string, string>> = {
     // Dashboard
     dashboard_greeting_name: "Tervetuloa, {username}!",
     current_goal: "Nykyinen tavoitteesi: {goal}",
-    change_goal: "(Vaihda)",
     sign_out: "Kirjaudu ulos",
     stat_streak: "Päiväputki",
     stat_total_minutes: "Minuutit yhteensä",
@@ -948,6 +1204,30 @@ export const translations: Record<string, Record<string, string>> = {
     cycles_short: "kierrosta",
     reset_app: "Nollaa Sovellus",
     reset_app_confirm: "Oletko varma, että haluat nollata sovelluksen? Koko historiasi ja kaikki asetuksesi poistetaan pysyvästi.",
+
+    // Profile Settings
+    profile_settings_title: "Profiili & Asetukset",
+    profile_info_title: "Profiilin Tiedot",
+    user_name_label: "Käyttäjänimi",
+    email_label: "Sähköposti",
+    primary_goal_label: "Päätavoite",
+    session_prefs_title: "Sessioasetukset",
+    default_timer_style_label: "Oletusajastimen Tyyli",
+    timer_style_circle: "Ympyrä",
+    timer_style_bar: "Palkki",
+    timer_style_digital: "Digitaalinen",
+    timer_style_hourglass: "Tiimalasi",
+    default_volume_label: "Oletusmusiikin Äänenvoimakkuus",
+    default_voice_label: "Oletusääniassistentti",
+    voice_female: "Nainen",
+    voice_male: "Mies",
+    voice_Kore: "Kore (Nainen)",
+    voice_Puck: "Puck (Mies)",
+    voice_Charon: "Charon (Mies)",
+    voice_Fenrir: "Fenrir (Nainen)",
+    voice_Zephyr: "Zephyr (Mies)",
+    save_changes: "Tallenna Muutokset",
+    cancel: "Peruuta",
 
     // Protocol Selection
     protocol_title_relax: "Valitse Rentoutumisrituaalisi",
@@ -977,7 +1257,7 @@ export const translations: Record<string, Record<string, string>> = {
 
     // Session Settings
     session_settings_title: "Session Asetukset",
-    session_settings_subtitle: "Säädä lämpötiloja räätälöidäksesi rituaalin ympäristöösi.",
+    session_settings_subtitle: "Säädä rituaaliasi ympäristön ja mieltymystesi mukaan.",
     sauna_temp: "Saunan Lämpötila",
     water_temp: "Veden Lämpötila",
     adjusted_times: "Säädetyt Ajat",
@@ -986,6 +1266,9 @@ export const translations: Record<string, Record<string, string>> = {
     start_adjusted: "Aloita Säädetyillä Ajoilla",
     start_original: "Käytä Alkuperäisiä Aikoja",
     stage_duration_display: "{stageName}: {duration} min",
+    audio_guidance_label: "Ääniopastus",
+    audio_guidance_desc: "Ota käyttöön puhutut ohjeet jokaiseen vaiheeseen.",
+    assistant_voice_label: "Assistentin Ääni",
 
     // Wellbeing Check
     wellbeing_check_title: "Tarkistus ennen Rituaalia",
@@ -1013,14 +1296,25 @@ export const translations: Record<string, Record<string, string>> = {
     close: "Sulje",
     next_step: "Seuraava Vaihe",
     end_stage: "Lopeta",
+    ai_generating_audio_title: "Luodaan ääntä...",
+    audio_guidance_start_SAUNA: "Aloita sauna. Rentoudu ja keskity hengitykseesi.",
+    audio_guidance_start_COLD: "Aloita kylmäpulahdus. Hallitse hengitystäsi.",
+    audio_guidance_start_REST: "Aloita lepo. Anna kehosi palautua.",
+    audio_guidance_end_SAUNA: "Sauna ohi. Valmistaudu kylmään.",
+    audio_guidance_end_COLD: "Kylmäpulahdus ohi. Valmistaudu lepäämään.",
+    audio_guidance_end_REST: "Lepo ohi. Valmistautuminen seuraavaan kierrokseen.",
+    audio_guidance_session_complete: "Viimeinen kierros suoritettu. Hyvin tehty.",
 
-    // Summary
+    // Summary & History
     summary_title: "Rituaali Suoritettu",
     summary_subtitle: "Olet suorittanut {protocolName}-rituaalin.",
     summary_total_time: "Kokonaisaika",
     summary_cycles_completed: "Suoritetut kierrokset",
+    wellbeing_summary_title: "Tarkistuksesi ennen Rituaalia",
     minutes: "minuuttia",
     done: "Valmis",
+    view_details: "Näytä tiedot",
+    history_detail_title: "Session Tiedot",
     
     // Music Player
     music_artist_mixkit: 'Mixkit',

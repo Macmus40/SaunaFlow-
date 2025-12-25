@@ -79,8 +79,8 @@ export const ChevronRightIcon: React.FC<IconProps> = ({className}) => (
 );
 
 export const SparklesIcon: React.FC<IconProps> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={`w-full h-full ${className}`}>
+        <path fillRule="evenodd" d="M9 4.5a.75.75 0 0 1 .75.75l.493 1.48a.75.75 0 0 0 1.48.493l1.48-.493a.75.75 0 0 1 .976.976l-.494 1.48a.75.75 0 0 0 .493 1.48l1.48.493a.75.75 0 0 1 0 1.5l-1.48.493a.75.75 0 0 0-.493 1.48l.494 1.48a.75.75 0 0 1-.976.976l-1.48-.494a.75.75 0 0 0-1.48.493l-.493 1.48a.75.75 0 0 1-1.5 0l-.493-1.48a.75.75 0 0 0-1.48-.493l-1.48.494a.75.75 0 0 1-.976-.976l.494-1.48a.75.75 0 0 0-.493-1.48l-1.48-.493a.75.75 0 0 1 0-1.5l1.48-.493a.75.75 0 0 0 .493-1.48l-.494-1.48a.75.75 0 0 1 .976-.976l1.48.493a.75.75 0 0 0 1.48-.493l.493-1.48A.75.75 0 0 1 9 4.5Zm10.5 9.75a.75.75 0 0 1 .75.75l.245.735a.75.75 0 0 0 1.43.245l.735-.245a.75.75 0 0 1 .976.976l-.245.735a.75.75 0 0 0 .245 1.43l.735.245a.75.75 0 0 1 0 1.5l-.735.245a.75.75 0 0 0-.245 1.43l.245.735a.75.75 0 0 1-.976.976l-.735-.245a.75.75 0 0 0-1.43.245l-.245.735a.75.75 0 0 1-1.5 0l-.245-.735a.75.75 0 0 0-1.43-.245l-.735.245a.75.75 0 0 1-.976-.976l.245-.735a.75.75 0 0 0-.245-1.43l-.735-.245a.75.75 0 0 1 0-1.5l.735-.245a.75.75 0 0 0 .245-1.43l-.245-.735a.75.75 0 0 1 .976-.976l.735.245a.75.75 0 0 0 1.43-.245l.245-.735a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
     </svg>
 );
 
@@ -103,12 +103,10 @@ export const InformationCircleIcon: React.FC<IconProps> = ({className}) => (
 );
 
 export const TrophyIcon: React.FC<IconProps> = ({className}) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-6 h-6 ${className}`}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9a9 9 0 1 1 9 0Z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75V11.25m-3-3.75h6" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.75v-3.75m0 0a3.75 3.75 0 0 1 3.75-3.75h.75" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v3.75m0 0a3.75 3.75 0 0 0-3.75-3.75H8.25" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75a3.75 3.75 0 0 1-3.75-3.75V9.75A1.5 1.5 0 0 1 9.75 8.25h4.5a1.5 1.5 0 0 1 1.5 1.5v2.25a3.75 3.75 0 0 1-3.75 3.75Z" />
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9a9.75 9.75 0 0 1 9 0Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 12.75V18.75m-1.5-6-3-3.75a3.75 3.75 0 0 1 7.5 0l-3 3.75Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21.75V18.75m0 0a2.25 2.25 0 0 0 2.25-2.25H16.5a2.25 2.25 0 0 1-2.25-2.25V7.5A2.25 2.25 0 0 0 12 5.25a2.25 2.25 0 0 0-2.25 2.25v3.75a2.25 2.25 0 0 1-2.25 2.25H7.5a2.25 2.25 0 0 0 2.25 2.25M12 18.75v-3" />
     </svg>
 );
 
@@ -173,6 +171,14 @@ export const BatteryFullIcon: React.FC<IconProps> = ({ className }) => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 10.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 .75-.75Z" />
     </svg>
 );
+
+export const CogIcon: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-full h-full ${className}`}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a5.25 5.25 0 0 1 5.25 5.25c0 1.954-1.043 3.68-2.61 4.614a1.875 1.875 0 0 1-2.22 0A5.22 5.22 0 0 1 12 17.25a5.25 5.25 0 0 1-5.25-5.25 5.25 5.25 0 0 1 5.25-5.25Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75V4.5m0 15V17.25m-5.25-5.25H4.5m15 0h-2.25m-10.4-3.9 1.5-1.5m7.4 7.4 1.5-1.5m-10.4 0 1.5 1.5m7.4-7.4-1.5 1.5" />
+    </svg>
+);
+
 
 // Admin Panel Icons
 export const UsersIcon: React.FC<IconProps> = ({className}) => (

@@ -1,4 +1,3 @@
-// Fix: Import React to resolve 'Cannot find namespace React' error.
 import React from 'react';
 
 export enum Goal {
@@ -32,6 +31,19 @@ export interface SessionLog {
   cyclesCompleted: number;
   date: string;
   goal: Goal | null;
+  hydration?: number; // 1-5
+  energy?: number; // 1-5
+  mood?: 'stressed' | 'neutral' | 'calm';
+  intention?: string;
+  user_id?: string;
+}
+
+export interface BackgroundImage {
+  id: string;
+  url: string;
+  storage_path: string;
+  created_at: string;
+  created_by: string;
 }
 
 export enum AppState {
@@ -47,6 +59,8 @@ export enum AppState {
     InSession,
     Summary,
     AdminPanel,
+    HistoryDetail,
+    ProfileSettings,
 }
 
 export interface Achievement {
@@ -67,6 +81,16 @@ export interface Track {
 
 export type TimerStyle = 'circle' | 'bar' | 'digital' | 'hourglass';
 export type TimerStatus = 'initial' | 'running' | 'paused' | 'completed';
+
+export const VOICES = ['Kore', 'Puck', 'Charon', 'Fenrir', 'Zephyr'] as const;
+export type VoiceName = typeof VOICES[number];
+
+export interface UserPreferences {
+    defaultTimerStyle: TimerStyle;
+    defaultVolume: number;
+    defaultVoiceGuidance: boolean;
+    defaultVoice: VoiceName;
+}
 
 // Admin Panel Types
 export type SubscriptionStatus = 'Active' | 'Expired' | 'Lifetime';

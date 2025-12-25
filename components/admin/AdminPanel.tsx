@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
-import { UserManagement } from './UserManagement';
+import type { Session } from '@supabase/auth-js';
+import { UserManagement } from '../UserManagement';
 import { ContentManagement } from './ContentManagement';
 import { SubscriptionManagement } from './SubscriptionManagement';
 import { UsersIcon, PhotoIcon, CreditCardIcon } from '../icons/Icons';
 
 interface AdminPanelProps {
+  session: Session | null;
   onExit: () => void;
 }
 
@@ -30,7 +32,7 @@ const NavItem: React.FC<{
   </button>
 );
 
-export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
+export const AdminPanel: React.FC<AdminPanelProps> = ({ session, onExit }) => {
   const [currentView, setCurrentView] = useState<AdminView>('users');
 
   const renderView = () => {
@@ -38,7 +40,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
       case 'users':
         return <UserManagement />;
       case 'content':
-        return <ContentManagement />;
+        return <ContentManagement session={session} />;
       case 'subscriptions':
         return <SubscriptionManagement />;
       default:

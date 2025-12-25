@@ -1,8 +1,8 @@
 
 import React, { useState, useMemo } from 'react';
-import type { User, SubscriptionStatus, UserGroup } from '../../types';
-import { MOCK_USERS } from './adminMockData';
-import { PencilIcon, TrashIcon } from '../icons/Icons';
+import type { User, SubscriptionStatus } from '../types';
+import { MOCK_USERS } from './admin/adminMockData';
+import { PencilIcon, TrashIcon } from './icons/Icons';
 
 const getStatusColor = (status: SubscriptionStatus) => {
     switch (status) {
