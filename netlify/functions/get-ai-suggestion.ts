@@ -57,7 +57,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
             };
         }
         
-        const ai = new GoogleGenAI({ apiKey });
+        // Fix: Use process.env.API_KEY directly in the constructor as per guidelines.
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
         const response = await ai.models.generateContent({
            // Fix: Use the recommended gemini-3-flash-preview model for text generation tasks

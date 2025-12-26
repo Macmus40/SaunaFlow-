@@ -3,14 +3,15 @@ import type { Session } from '@supabase/auth-js';
 import { UserManagement } from '../UserManagement';
 import { ContentManagement } from './ContentManagement';
 import { SubscriptionManagement } from './SubscriptionManagement';
-import { UsersIcon, PhotoIcon, CreditCardIcon } from '../icons/Icons';
+import { BackgroundsAdmin } from './BackgroundsAdmin';
+import { UsersIcon, PhotoIcon, CreditCardIcon, SunIcon } from '../icons/Icons';
 
 interface AdminPanelProps {
   session: Session | null;
   onExit: () => void;
 }
 
-type AdminView = 'users' | 'content' | 'subscriptions';
+type AdminView = 'users' | 'content' | 'subscriptions' | 'backgrounds';
 
 const NavItem: React.FC<{
   icon: React.ReactNode;
@@ -42,6 +43,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ session, onExit }) => {
         return <ContentManagement session={session} />;
       case 'subscriptions':
         return <SubscriptionManagement />;
+      case 'backgrounds':
+        return <BackgroundsAdmin />;
       default:
         return <UserManagement />;
     }
@@ -49,7 +52,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ session, onExit }) => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-slate-900 text-white">
-      {/* Sidebar Navigation */}
       <aside className="w-full md:w-64 bg-slate-800/50 p-4 border-b md:border-b-0 md:border-r border-slate-700 flex-shrink-0">
         <div className="mb-8">
             <h1 className="text-2xl font-bold text-center">SaunaFlow</h1>
@@ -57,8 +59,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ session, onExit }) => {
         </div>
         <nav className="flex flex-row md:flex-col items-center space-x-2 md:space-x-0 md:space-y-2">
             <NavItem label="Clients" icon={<UsersIcon />} isActive={currentView === 'users'} onClick={() => setCurrentView('users')} />
+            <NavItem label="Wallpapers" icon={<SunIcon />} isActive={currentView === 'backgrounds'} onClick={() => setCurrentView('backgrounds')} />
             <NavItem label="Content" icon={<PhotoIcon />} isActive={currentView === 'content'} onClick={() => setCurrentView('content')} />
-            <NavItem label="Subscriptions" icon={<CreditCardIcon />} isActive={currentView === 'subscriptions'} onClick={() => setCurrentView('subscriptions')} />
+            <NavItem label="Billing" icon={<CreditCardIcon />} isActive={currentView === 'subscriptions'} onClick={() => setCurrentView('subscriptions')} />
         </nav>
         <div className="mt-auto pt-8">
              <button onClick={onExit} className="w-full text-center text-slate-500 hover:text-slate-300 text-sm transition-colors py-2">
@@ -67,7 +70,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ session, onExit }) => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className="flex-grow p-6 sm:p-8 overflow-y-auto">
         {renderView()}
       </main>

@@ -1,26 +1,29 @@
-
 import React, { useState } from 'react';
 import type { Goal } from '../types';
 import { Goal as GoalEnum } from '../types';
 import { SunIcon, BoltIcon } from './icons/Icons';
 import { useLanguage } from '../contexts/LanguageContext';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useActiveBackground } from '../hooks/useActiveBackground';
 
 interface OnboardingScreenProps {
   onOnboardingComplete: (name: string, goal: Goal) => void;
 }
 
-const backgroundImage = 'https://images.unsplash.com/photo-1544161515-cfd626dba494?auto=format&fit=crop&w=1280&q=80';
+const defaultBg = 'https://images.unsplash.com/photo-1544161515-cfd626dba494?auto=format&fit=crop&w=1280&q=80';
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onOnboardingComplete }) => {
   const [name, setName] = useState('');
   const { t } = useLanguage();
+  const { backgroundUrl } = useActiveBackground('start');
   
+  const activeBg = backgroundUrl || defaultBg;
+
   return (
-    <div className="relative flex flex-col min-h-screen text-white">
+    <div className="relative flex flex-col min-h-screen text-white transition-all duration-1000">
       <div
         className="absolute inset-0 bg-cover bg-center -z-10"
-        style={{ backgroundImage: `url("${backgroundImage}")` }}
+        style={{ backgroundImage: `url("${activeBg}")` }}
       />
       <div className="absolute inset-0 bg-black/60 -z-10" />
 
@@ -29,28 +32,20 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onOnboarding
       </header>
       <main className="flex flex-col items-center justify-center flex-grow text-center p-4 sm:p-6">
         <h1 className="text-4xl font-bold mb-4">{t('welcome_title')}</h1>
-        <p className="text-lg text-slate-300 mb-8 max-w-md">
-          {t('welcome_subtitle')}
-        </p>
+        <p className="text-lg text-slate-300 mb-8 max-w-md">{t('welcome_subtitle')}</p>
 
         <div className="w-full max-w-sm mb-8">
-          <label htmlFor="name" className="block text-slate-300 mb-2 text-left">{t('name_label')}</label>
           <input
               type="text"
-              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('name_placeholder')}
-              className="w-full bg-slate-800/80 border border-slate-700 rounded-lg p-4 text-lg focus:ring-amber-500 focus:border-amber-500 placeholder-slate-500"
+              className="w-full bg-slate-800/80 backdrop-blur-md border border-slate-700 rounded-lg p-4 text-lg focus:ring-amber-500 placeholder-slate-500"
               autoFocus
           />
         </div>
 
-        <p className={`text-lg text-slate-300 mb-12 max-w-md transition-opacity duration-500 ${name.trim() ? 'opacity-100' : 'opacity-0'}`}>
-          {t('goal_prompt')}
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl transition-opacity duration-500 ${name.trim() ? 'opacity-100' : 'opacity-30 pointer-events-none'}`}>
           <GoalCard
             icon={<SunIcon />}
             title={t('goal_relax_title')}

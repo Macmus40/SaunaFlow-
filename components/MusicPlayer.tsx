@@ -13,40 +13,42 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({ defaultVolume = 0.5 })
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(defaultVolume);
   const audioRef = useRef<HTMLAudioElement>(null);
-  
-  // This ref helps manage autoplaying the next track
   const wasPlayingWhenTrackChanged = useRef(false);
 
   const currentTrack = PLAYLIST[currentTrackIndex];
 
-  // Effect to handle volume changes
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
   }, [volume]);
   
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
+    if (!audioRef.current) return;
+
     if (isPlaying) {
-      audioRef.current?.pause();
+      audioRef.current.pause();
     } else {
-      audioRef.current?.play().catch(error => {
-        console.error("Audio playback was prevented.", error);
-        // State will be synced by onPause event if it fails
-      });
+      console.log(`[MusicPlayer] Attempting to play: ${currentTrack.src}`);
+      try {
+        await audioRef.current.play();
+        console.log(`[MusicPlayer] Playback started. ReadyState: ${audioRef.current.readyState}`);
+      } catch (error: any) {
+        console.error(`[MusicPlayer] Playback error (${error.name}): ${error.message}`);
+        setIsPlaying(false);
+        // Autoplay policy fix: log details
+        if (error.name === 'NotAllowedError') {
+          console.warn("[MusicPlayer] Autoplay prevented by browser. User interaction required.");
+        }
+      }
     }
   };
   
   const changeTrack = useCallback((direction: 'next' | 'prev') => {
-    // Remember if we were playing before the track changes
     wasPlayingWhenTrackChanged.current = isPlaying; 
-    
     setCurrentTrackIndex(prev => {
-        if (direction === 'next') {
-            return (prev + 1) % PLAYLIST.length;
-        } else {
-            return (prev - 1 + PLAYLIST.length) % PLAYLIST.length;
-        }
+        if (direction === 'next') return (prev + 1) % PLAYLIST.length;
+        return (prev - 1 + PLAYLIST.length) % PLAYLIST.length;
     });
   }, [isPlaying]);
 
@@ -58,10 +60,9 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({ defaultVolume = 0.5 })
   };
   
   const handleOnCanPlay = () => {
-      // If the player was playing before we changed tracks, start the new one automatically.
-      if (wasPlayingWhenTrackChanged.current) {
-          audioRef.current?.play().catch(e => console.error("Autoplay after track change failed", e));
-          wasPlayingWhenTrackChanged.current = false; // Reset flag after use
+      if (wasPlayingWhenTrackChanged.current && audioRef.current) {
+          audioRef.current.play().catch(e => console.warn("[MusicPlayer] Autoplay after change failed", e));
+          wasPlayingWhenTrackChanged.current = false;
       }
   };
 
@@ -75,6 +76,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({ defaultVolume = 0.5 })
         onPause={() => setIsPlaying(false)}
         onCanPlay={handleOnCanPlay}
         preload="auto"
+        crossOrigin="anonymous"
         />
       <div className="w-16 h-16 bg-slate-700 rounded-lg flex-shrink-0">
           <img src={currentTrack.cover} alt="Album art" className="w-full h-full object-cover rounded-lg"/>
