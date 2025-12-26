@@ -14,6 +14,7 @@ import { AdminPanel } from './components/admin/AdminPanel';
 import { HistoryDetailScreen } from './components/HistoryDetailScreen';
 import { ProfileSettingsScreen } from './components/ProfileSettingsScreen';
 import { DebugPanel } from './components/DebugPanel';
+import ActiveBackground from './components/ActiveBackground';
 import { AppState, Goal } from './types';
 import type { Protocol, SessionLog, UserPreferences } from './types';
 
@@ -38,15 +39,12 @@ const App: React.FC = () => {
   const [sessionSettings, setSessionSettings] = useState<any>({ voiceGuidance: true, voice: 'Kore' });
   const [showDebug, setShowDebug] = useState(false);
 
-  // Funkcja czyszcząca URL bez przeładowania strony
   const cleanUrl = useCallback(() => {
     if (window.location.hash.includes('access_token=')) {
-      console.log("Cleaning tokens from URL hash...");
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
     }
   }, []);
 
-  // 1. Inicjalizacja Auth na starcie
   useEffect(() => {
     if (!IS_CONFIGURED) {
       setAuthReady(true);
@@ -56,17 +54,10 @@ const App: React.FC = () => {
 
     const initAuth = async () => {
       try {
-        // Sprawdź sesję przy pierwszym montowaniu (np. powrót z maila)
         const { data: { session: initialSession }, error } = await supabase.auth.getSession();
         if (error) throw error;
-        
         setSession(initialSession);
-        
-        // Jeśli sesja już jest (np. z localStorage lub właśnie sparsowana przez SDK)
-        if (initialSession) {
-          console.log("Initial session found on mount");
-          cleanUrl();
-        }
+        if (initialSession) cleanUrl();
       } catch (e) {
         console.error("Auth init error:", e);
       } finally {
@@ -75,44 +66,28 @@ const App: React.FC = () => {
     };
     initAuth();
 
-    // Listener zmian stanu Auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
-      console.log(`Supabase Auth Event: ${event}`);
       setSession(newSession);
-      
-      // Czyszczenie URL tylko przy sukcesie logowania
       if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
-        if (newSession) {
-          cleanUrl();
-        }
+        if (newSession) cleanUrl();
       }
-      
       if (event === 'SIGNED_OUT') {
         setAppState(AppState.Auth);
       }
-      
       setAuthReady(true);
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, [cleanUrl]);
 
-  // 2. Pobieranie danych profilu (wykonywane tylko gdy sesja jest gotowa)
   useEffect(() => {
     const fetchUserData = async () => {
       if (!authReady) return;
-      
-      if (!session) {
-        setAppState(AppState.Auth);
-        return;
-      }
+      if (!session) { setAppState(AppState.Auth); return; }
 
       const healthAccepted = localStorage.getItem('saunaflow_health_check_accepted') === 'true';
       if (!healthAccepted) { setAppState(AppState.HealthCheck); return; }
 
-      // Dev Bypass logic
       if (session.user.id === 'dev-user') {
         setUsername("Dev Tester");
         setGoal(Goal.Relax);
@@ -142,7 +117,6 @@ const App: React.FC = () => {
           setAppState(AppState.Onboarding);
         }
       } catch (err) {
-        console.error("Profile fetch error:", err);
         setAppState(AppState.Onboarding);
       }
     };
@@ -163,19 +137,18 @@ const App: React.FC = () => {
   const renderContent = () => {
     if (showDebug) return <DebugPanel session={session} onExit={() => setShowDebug(false)} />;
     
-    // Blokada renderowania do czasu ustalenia stanu auth
     if (!authReady) {
       return (
-        <div className="flex flex-col items-center justify-center h-screen bg-slate-900 text-white space-y-4">
+        <div className="flex flex-col items-center justify-center h-screen space-y-4">
           <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-400 font-medium animate-pulse tracking-wide uppercase text-xs">Authenticating Session...</p>
+          <p className="text-slate-400 font-medium animate-pulse tracking-wide uppercase text-xs">Authenticating...</p>
         </div>
       );
     }
 
     if (appState === AppState.Loading && session) {
         return (
-          <div className="flex flex-col items-center justify-center h-screen bg-slate-900 text-white space-y-4">
+          <div className="flex flex-col items-center justify-center h-screen space-y-4">
             <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
             <p className="text-slate-400 font-medium tracking-wide uppercase text-xs">Loading Profile...</p>
           </div>
@@ -199,17 +172,20 @@ const App: React.FC = () => {
     }
   };
 
-  return <div className="min-h-screen bg-slate-900 font-sans relative">
-    {renderContent()}
-    {IS_TEST_MODE && authReady && !showDebug && (
-        <button 
-          onClick={() => setShowDebug(true)}
-          className="fixed bottom-4 right-4 bg-rose-600 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-full shadow-lg hover:bg-rose-500 z-50 transition-all active:scale-95"
-        >
-          Diagnostic Panel
-        </button>
-    )}
-  </div>;
+  return (
+    <div className="min-h-screen bg-transparent font-sans relative">
+      <ActiveBackground />
+      {renderContent()}
+      {IS_TEST_MODE && authReady && !showDebug && (
+          <button 
+            onClick={() => setShowDebug(true)}
+            className="fixed bottom-4 right-4 bg-rose-600 text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-full shadow-lg hover:bg-rose-500 z-50 transition-all active:scale-95"
+          >
+            Diagnostic Panel
+          </button>
+      )}
+    </div>
+  );
 };
 
 export default App;

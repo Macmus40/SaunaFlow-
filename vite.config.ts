@@ -11,9 +11,6 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      // Fix: Use the manually defined __dirname to resolve the "@" alias to the project root
-      "@": path.resolve(__dirname, "./"),
-    },
+    alias: {},
   },
 });

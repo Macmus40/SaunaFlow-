@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import BackgroundManager from '@/components/BackgroundManager';
+import BackgroundManager from '../../BackgroundManager';
 import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY, maskKey } from '../../../lib/supabaseClient';
 
 interface DebugPanelProps {
