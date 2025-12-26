@@ -8,20 +8,42 @@ export const BackgroundsAdmin: React.FC = () => {
   const [backgrounds, setBackgrounds] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isScopeMissing, setIsScopeMissing] = useState(false);
+  const [banner, setBanner] = useState<{ msg: string, type: 'error' | 'success' | 'warning' } | null>(null);
+
+  const showBanner = (msg: string, type: 'error' | 'success' | 'warning' = 'error') => {
+    setBanner({ msg, type });
+    setTimeout(() => setBanner(null), 5000);
+  };
 
   const fetchBackgrounds = async () => {
     setLoading(true);
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) return;
 
-    const { data, error } = await supabase
+    let query = supabase
       .from('backgrounds')
       .select('*')
       .eq('user_id', session.user.id)
-      .eq('scope', scope)
       .order('created_at', { ascending: false });
 
-    if (!error) setBackgrounds(data || []);
+    // Próba ze scope
+    const { data, error } = await query.eq('scope', scope);
+
+    if (error && (error.message.includes('scope') || error.code === 'PGRST204' || error.code === '42703')) {
+      setIsScopeMissing(true);
+      // Fallback: pobierz wszystko bez filtra scope
+      const { data: fallbackData } = await supabase
+        .from('backgrounds')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: false });
+      
+      if (fallbackData) setBackgrounds(fallbackData);
+    } else if (!error) {
+      setBackgrounds(data || []);
+      setIsScopeMissing(false);
+    }
     setLoading(false);
   };
 
@@ -39,7 +61,7 @@ export const BackgroundsAdmin: React.FC = () => {
       const userId = session?.user.id;
       const fileExt = file.name.split('.').pop();
       const fileName = `${crypto.randomUUID()}.${fileExt}`;
-      const filePath = `${userId}/${scope}/${fileName}`;
+      const filePath = `${userId}/${isScopeMissing ? 'global' : scope}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('backgrounds')
@@ -51,21 +73,37 @@ export const BackgroundsAdmin: React.FC = () => {
         .from('backgrounds')
         .getPublicUrl(filePath);
 
-      const { error: dbError } = await supabase.from('backgrounds').insert({
+      const insertData: any = {
         user_id: userId,
-        scope,
         object_path: filePath,
         public_url: publicUrl,
         filename: file.name,
         content_type: file.type,
         size_bytes: file.size,
         is_active: backgrounds.length === 0
-      });
+      };
 
-      if (dbError) throw dbError;
+      if (!isScopeMissing) {
+        insertData.scope = scope;
+      }
+
+      const { error: dbError } = await supabase.from('backgrounds').insert(insertData);
+
+      if (dbError) {
+        if (dbError.message.includes('scope')) {
+            setIsScopeMissing(true);
+            delete insertData.scope;
+            const { error: retryError } = await supabase.from('backgrounds').insert(insertData);
+            if (retryError) throw retryError;
+        } else {
+            throw dbError;
+        }
+      }
+      
+      showBanner("Background uploaded successfully!", "success");
       fetchBackgrounds();
     } catch (err: any) {
-      alert(err.message);
+      showBanner(err.message, "error");
     } finally {
       setUploading(false);
     }
@@ -73,27 +111,54 @@ export const BackgroundsAdmin: React.FC = () => {
 
   const setActive = async (id: string) => {
     const { data: { session } } = await supabase.auth.getSession();
-    await supabase.from('backgrounds')
-      .update({ is_active: false })
-      .eq('user_id', session?.user.id)
-      .eq('scope', scope);
+    const userId = session?.user.id;
+
+    const resetQuery = supabase.from('backgrounds').update({ is_active: false }).eq('user_id', userId);
+    if (!isScopeMissing) resetQuery.eq('scope', scope);
     
-    await supabase.from('backgrounds')
-      .update({ is_active: true })
-      .eq('id', id);
+    await resetQuery;
     
-    fetchBackgrounds();
+    const { error } = await supabase.from('backgrounds').update({ is_active: true }).eq('id', id);
+    
+    if (error) showBanner(error.message);
+    else {
+        showBanner("Active background updated", "success");
+        fetchBackgrounds();
+    }
   };
 
   const deleteBg = async (bg: any) => {
-    if (!confirm('Are you sure?')) return;
-    await supabase.storage.from('backgrounds').remove([bg.object_path]);
-    await supabase.from('backgrounds').delete().eq('id', bg.id);
-    fetchBackgrounds();
+    if (!confirm('Are you sure you want to delete this background?')) return;
+    try {
+        await supabase.storage.from('backgrounds').remove([bg.object_path]);
+        await supabase.from('backgrounds').delete().eq('id', bg.id);
+        showBanner("Background deleted", "success");
+        fetchBackgrounds();
+    } catch (err: any) {
+        showBanner(err.message);
+    }
   };
 
   return (
     <div className="space-y-6">
+      {banner && (
+        <div className={`p-4 rounded-lg border flex items-center justify-between animate-in fade-in slide-in-from-top-4 ${
+          banner.type === 'error' ? 'bg-rose-500/10 border-rose-500/20 text-rose-400' : 
+          banner.type === 'warning' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' :
+          'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+        }`}>
+          <span className="text-sm font-medium">{banner.msg}</span>
+          <button onClick={() => setBanner(null)} className="text-current opacity-50 hover:opacity-100">&times;</button>
+        </div>
+      )}
+
+      {isScopeMissing && (
+        <div className="bg-amber-900/30 border border-amber-500/30 p-4 rounded-xl text-amber-200 text-sm">
+          <p className="font-bold mb-1">⚠️ SQL Migration Required</p>
+          <p>Database is missing 'scope' column. Backgrounds will be managed globally until you run the SQL migration script in Supabase Dashboard.</p>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-white">Screen Backgrounds</h2>
@@ -104,7 +169,8 @@ export const BackgroundsAdmin: React.FC = () => {
           <select 
             value={scope} 
             onChange={(e) => setScope(e.target.value as BackgroundScope)}
-            className="bg-slate-800 border border-slate-700 text-white rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-amber-500"
+            disabled={isScopeMissing}
+            className="bg-slate-800 border border-slate-700 text-white rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50"
           >
             <option value="start">Start Screen</option>
             <option value="login">Login Screen</option>
@@ -124,7 +190,7 @@ export const BackgroundsAdmin: React.FC = () => {
           <div className="col-span-full py-20 text-center text-slate-500 animate-pulse">Loading gallery...</div>
         ) : backgrounds.length === 0 ? (
           <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-800 rounded-xl text-slate-600">
-            No backgrounds for this screen yet.
+            No backgrounds {isScopeMissing ? '' : 'for this screen'} yet.
           </div>
         ) : (
           backgrounds.map((bg) => (
@@ -143,6 +209,11 @@ export const BackgroundsAdmin: React.FC = () => {
               {bg.is_active && (
                 <div className="absolute top-2 left-2 bg-amber-500 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded uppercase">
                   Active
+                </div>
+              )}
+              {bg.scope && (
+                <div className="absolute top-2 right-2 bg-slate-900/80 text-white text-[8px] px-2 py-0.5 rounded uppercase border border-slate-700">
+                  {bg.scope}
                 </div>
               )}
             </div>
