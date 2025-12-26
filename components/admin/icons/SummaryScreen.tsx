@@ -1,7 +1,6 @@
-
 import React from 'react';
-import type { SessionLog } from '../types';
-import { useLanguage } from '../contexts/LanguageContext';
+import type { SessionLog } from '../../../types';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface SummaryScreenProps {
   sessionLog: SessionLog;

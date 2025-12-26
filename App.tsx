@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import type { Session } from '@supabase/auth-js';
 import { supabase, IS_CONFIGURED, IS_TEST_MODE } from './lib/supabaseClient';
 import { OnboardingScreen } from './components/OnboardingScreen';
-import { HealthCheckScreen } from './components/HealthCheckScreen';
+import { HealthCheckScreen } from './components/admin/HealthCheckScreen';
 import { AuthScreen } from './components/AuthScreen';
 import { DashboardScreen } from './components/DashboardScreen';
 import { ProtocolSelectionScreen } from './components/ProtocolSelectionScreen';

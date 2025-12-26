@@ -60,7 +60,8 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
         const ai = new GoogleGenAI({ apiKey });
 
         const response = await ai.models.generateContent({
-           model: "gemini-2.5-flash",
+           // Fix: Use the recommended gemini-3-flash-preview model for text generation tasks
+           model: "gemini-3-flash-preview",
            contents: prompt,
            config: {
              responseMimeType: "application/json",
@@ -68,8 +69,9 @@ const handler: Handler = async (event: HandlerEvent, context: HandlerContext) =>
            },
         });
         
-        // Odpowiedź AI jest już w formacie JSON dzięki responseSchema
-        const suggestionJson = JSON.parse(response.text);
+        // Odpowiedź AI jest już w formacie JSON dzięki responseSchema. Access .text property directly.
+        const text = response.text;
+        const suggestionJson = text ? JSON.parse(text) : {};
 
         return {
             statusCode: 200,

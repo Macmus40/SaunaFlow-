@@ -1,12 +1,12 @@
 
 import React from 'react';
 import type { Session } from '@supabase/auth-js';
-import type { Goal, SessionLog, Achievement } from '../types';
-import { FireIcon, SnowflakeIcon, HeartIcon, CogIcon, ChevronRightIcon } from './icons/Icons';
-import { ALL_ACHIEVEMENTS } from './achievements';
-import { useLanguage } from '../contexts/LanguageContext';
-import { LanguageSwitcher } from './LanguageSwitcher';
-import { supabase } from '../lib/supabaseClient';
+import type { Goal, SessionLog, Achievement } from './types';
+import { FireIcon, SnowflakeIcon, HeartIcon, CogIcon, ChevronRightIcon } from './components/icons/Icons';
+import { ALL_ACHIEVEMENTS } from './components/achievements';
+import { useLanguage } from './contexts/LanguageContext';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { supabase } from './lib/supabaseClient';
 
 
 interface DashboardScreenProps {
@@ -180,4 +180,4 @@ const StatCard: React.FC<StatCardProps> = ({ icon, value, label }) => (
         <p className="text-4xl font-bold text-slate-100">{value}</p>
         <p className="text-slate-400">{label}</p>
     </div>
-)
+);

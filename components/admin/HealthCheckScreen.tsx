@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { ShieldCheckIcon } from './icons/Icons';
-import { LanguageSwitcher } from './LanguageSwitcher';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { ShieldCheckIcon } from '../icons/Icons';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
 interface HealthCheckScreenProps {
   onComplete: () => void;

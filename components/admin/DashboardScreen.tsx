@@ -1,3 +1,4 @@
+
 import React from 'react';
 import type { Session } from '@supabase/auth-js';
 import type { Goal, SessionLog, Achievement } from '../types';
@@ -178,4 +179,4 @@ const StatCard: React.FC<StatCardProps> = ({ icon, value, label }) => (
         <p className="text-4xl font-bold text-slate-100">{value}</p>
         <p className="text-slate-400">{label}</p>
     </div>
-);
+)

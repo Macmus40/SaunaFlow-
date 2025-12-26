@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
-import { Goal, StageType } from '../types';
-import type { Protocol, Stage } from '../types';
-import { FireIcon, SnowflakeIcon, HeartIcon, PlusIcon, MinusIcon } from './icons/Icons';
-import { useLanguage } from '../contexts/LanguageContext';
+import { Goal, StageType } from '../../../types';
+import type { Protocol, Stage } from '../../../types';
+import { FireIcon, SnowflakeIcon, HeartIcon, PlusIcon, MinusIcon } from '../../icons/Icons';
+import { useLanguage } from '../../../contexts/LanguageContext';
 
 interface CustomProtocolScreenProps {
   goal: Goal | null;
@@ -104,7 +103,6 @@ export const CustomProtocolScreen: React.FC<CustomProtocolScreenProps> = ({ goal
         if (rest.enabled) stages.push({ type: StageType.Rest, duration: rest.duration * 60 });
 
         if (stages.length === 0) {
-            // Or show an error message
             return;
         }
 
